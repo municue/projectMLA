@@ -1,0 +1,404 @@
+.practice-page {
+  width: 44.2%;
+  margin-left: calc(23.2%);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #000;
+  color: #fff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: black black;
+}
+
+.practice-header {
+  position: fixed;
+  width: 40.7%;
+  top: 0;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #333;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+/* === Form === */
+.practice-form {
+  margin-top: 80px;
+  border: 0.8px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #000;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: cyan #000;
+}
+
+.practice-form::-webkit-scrollbar {
+  width: 6px;
+}
+.practice-form::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 10px;
+}
+.practice-form::-webkit-scrollbar-track {
+  background: black;
+}
+.practice-header h2{
+  font-size: 1.2rem;
+}
+.practice-form h3 {
+  margin: 15px 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.menu-icon {
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: white;
+  background: none;
+  border: none;
+}
+.filter-icon {
+  color: white;
+}
+
+.option-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.option-grid button {
+  flex: 1 1 calc(50% - 10px);
+  padding: 12px 15px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #111;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+}
+.option-grid button:hover {
+  color: cyan;
+  border-color: cyan;
+}
+.option-grid button.active {
+  background-color: black;
+  color: cyan;
+  font-weight: bold;
+  border-color: cyan;
+}
+
+.load-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid white;
+  border-radius: 6px;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+.load-btn:disabled {
+  background-color: #333;
+  color: #777;
+  cursor: not-allowed;
+  border: none;
+}
+.load-btn:hover:not(:disabled) {
+  background-color: black;
+  color: cyan;
+  border: 1px solid cyan;
+}
+
+/* === Practice Feed === */
+.practice-feed {
+  margin-top: 80px;
+  padding: 10px 0;
+  background-color: #000;
+  width: 95%;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* === Status Tabs === */
+.status-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+.status-tabs button {
+  flex: 1;
+  padding: 10px;
+  margin: 0 5px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-weight: bold;
+  margin-top: 2px;
+}
+.status-tabs button.Unattempted {
+  border: 1px solid rgb(245, 18, 18);
+  color: rgb(245, 18, 18);
+  background: black;
+}
+.status-tabs button.Unattempted.active,
+.status-tabs button.Unattempted:hover {
+  border: 3px solid rgb(245, 18, 18);
+  color: rgb(245, 18, 18);
+  background: black;
+  font-size: large;
+}
+.status-tabs button.InProgress {
+  border: 1px solid rgb(252, 196, 12);
+  color: rgb(252, 196, 12);
+  background: black;
+}
+.status-tabs button.InProgress.active,
+.status-tabs button.InProgress:hover {
+  border: 3px solid rgb(252, 196, 12);
+  color: rgb(252, 196, 12);
+  background: black;
+  font-size: large;
+}
+.status-tabs button.Done {
+  border: 1px solid rgb(16, 243, 16);
+  color: rgb(16, 243, 16);
+  background: black;
+}
+.status-tabs button.Done.active,
+.status-tabs button.Done:hover {
+  border: 3px solid rgb(16, 243, 16);
+  color: rgb(16, 243, 16);
+  background: black;
+  font-size: large;
+}
+
+/* === Practice Card === */
+.practice-card {
+  border: 1.5px solid #333;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: black;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.practice-card:hover {
+  border: 0.5px solid #777;
+}
+
+.practice-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.practice-title {
+  font-size: 1rem;
+  color: #fff;
+  font-size:18px;
+}
+
+/* === Status Tags === */
+.practice-status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.practice-status.Unattempted {
+  color: rgb(245, 18, 18);
+  background: black;
+}
+
+.practice-status.InProgress {
+  color: rgb(252, 196, 12);
+  background: black;
+}
+
+.practice-status.Done {
+  color: rgb(16, 243, 16);
+  background: black;
+}
+
+/* === Practice Actions Buttons === */
+.practice-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.practice-actions button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.practice-actions button.Unattempted,
+.reset-row button.Unattempted {
+  border: 1px solid rgb(245, 18, 18);
+  color: rgb(245, 18, 18);
+  background: black;
+}
+.practice-actions button.Unattempted:hover,
+.reset-row button.Unattempted:hover {
+  border: 2px solid rgb(245, 18, 18);
+  font-size: 1rem;
+}
+
+.practice-actions button.InProgress {
+  border: 1px solid rgb(252, 196, 12);
+  color: rgb(252, 196, 12);
+  background: black;
+}
+.practice-actions button.InProgress:hover {
+  border: 2px solid rgb(252, 196, 12);
+  font-size: 1rem;
+}
+
+.practice-actions button.Done {
+  border: 1px solid rgb(16, 243, 16);
+  color: rgb(16, 243, 16);
+  background: black;
+}
+.practice-actions button.Done:hover {
+  border: 2px solid rgb(16, 243, 16);
+  font-size: 1rem;
+}
+
+/* === Solution Block === */
+.practice-solution {
+  margin-top: 20px;
+  padding: 15px;
+  background: black;
+  border: 0.5px solid #333;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-radius: 6px;
+}
+
+.reset-row {
+  margin-top: 15px;
+  text-align: right;
+}
+
+.reset-row {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.reset-row .Unattempted {
+  border-radius: 6px; /* curve edge */
+  padding: 8px 14px;
+}
+
+.session-timer {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #00ffff;
+  margin: 10px 0;
+  padding-top: 40px;
+}
+
+/* === Step-by-step Solution Formatting === */
+.solution-step {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #0a0a0a;          /* slightly lighter than black for contrast */
+  border-left: 3px solid cyan;  /* highlight bar */
+  border-radius: 6px;
+}
+
+.solution-step p {
+  margin: 0 0 6px;
+  color: cyan;
+  font-weight: bold;
+}
+
+/* === Step-by-Step Solution Styling (from Calculator) === */
+
+.step-block {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-left: 3px solid cyan !important;
+  background: #0a0a0a;
+  border-radius: 6px;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.step-block-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.step-text {
+  margin: 6px 0 2px;
+  font-size: 1rem;
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.step-math {
+  margin: 2px 0 12px;
+  font-size: 1.1rem;
+}
+
+.step-label {
+  color: cyan;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+
+/* Fade-in animation */
+@keyframes fadeInStep {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeInStep 0.6s ease forwards;
+}

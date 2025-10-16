@@ -1,0 +1,752 @@
+[
+  {
+    "id": "0RH038iUHr7FkmH3eNEb",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "subtopic": "rational-exponents",
+    "type": "view-topic",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757658469,
+      "nanoseconds": 622000000
+    },
+    "source": "topics",
+    "difficulty": null,
+    "topic": "preliminaries",
+    "progress": null
+  },
+  {
+    "id": "0zeQWi2zwbVxFkEavkPN",
+    "subtopic": null,
+    "topic": null,
+    "source": "progress",
+    "progress": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757663085,
+      "nanoseconds": 34000000
+    },
+    "type": "progress-view",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "difficulty": null
+  },
+  {
+    "id": "1Gkd0ehFXF3KKGKSIxLw",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "source": "topics",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659656,
+      "nanoseconds": 996000000
+    },
+    "type": "view-topic",
+    "difficulty": null,
+    "topic": "preliminaries",
+    "subtopic": "integer-exponents",
+    "progress": null
+  },
+  {
+    "id": "3DOe6Nq1blmi4eUiP8Ck",
+    "subtopic": "polynomials",
+    "source": "topics",
+    "type": "view-topic",
+    "topic": "preliminaries",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757658159,
+      "nanoseconds": 777000000
+    },
+    "difficulty": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "progress": null
+  },
+  {
+    "id": "4YcbM9e8p50Z0ZDqbiHB",
+    "topic": null,
+    "progress": null,
+    "subtopic": null,
+    "source": "progress",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "type": "progress-view",
+    "difficulty": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757662071,
+      "nanoseconds": 590000000
+    }
+  },
+  {
+    "id": "5Hh5hdi3DvreuhcaoAij",
+    "progress": "Unattempted",
+    "difficulty": "easy",
+    "type": "practice",
+    "source": "practice",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": "Preliminaries",
+    "subtopic": "Integer Exponents",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659070,
+      "nanoseconds": 219000000
+    }
+  },
+  {
+    "id": "5OkTinPsIPbs8BepFIOL",
+    "progress": null,
+    "difficulty": null,
+    "topic": null,
+    "subtopic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660063,
+      "nanoseconds": 692000000
+    },
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "source": "progress",
+    "type": "progress-view"
+  },
+  {
+    "id": "6YSCzXP213jNagyHPggz",
+    "difficulty": null,
+    "topic": null,
+    "type": "progress-view",
+    "subtopic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659642,
+      "nanoseconds": 46000000
+    },
+    "progress": null,
+    "source": "progress",
+    "userEmail": "akinlademuheebah0526@gmail.com"
+  },
+  {
+    "id": "6v5IZ4xQWzlk7HpyMfkp",
+    "source": "topics",
+    "type": "view-topic",
+    "difficulty": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659627,
+      "nanoseconds": 145000000
+    },
+    "topic": "preliminaries",
+    "subtopic": "polynomials",
+    "progress": null,
+    "userEmail": "akinlademuheebah0526@gmail.com"
+  },
+  {
+    "id": "902peZNCw72O29EixROu",
+    "subtopic": "Integer Exponents",
+    "difficulty": "easy",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "type": "practice",
+    "progress": "Unattempted",
+    "source": "practice",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659072,
+      "nanoseconds": 309000000
+    },
+    "topic": "Preliminaries"
+  },
+  {
+    "id": "9oYTMaPTtn3tpCVL6C02",
+    "type": "practice",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "progress": "loaded",
+    "topic": "Preliminaries",
+    "subtopic": "Integer Exponents",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659064,
+      "nanoseconds": 94000000
+    },
+    "source": "practice",
+    "difficulty": "easy"
+  },
+  {
+    "id": "9zYawe20LQvIADJgl2Ca",
+    "topic": "Preliminaries",
+    "difficulty": "easy",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659067,
+      "nanoseconds": 740000000
+    },
+    "source": "practice",
+    "type": "practice",
+    "subtopic": "Integer Exponents",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "progress": "Unattempted"
+  },
+  {
+    "id": "BDcuagyLqvvmDKEVGJG2",
+    "source": "progress",
+    "topic": null,
+    "subtopic": null,
+    "progress": null,
+    "difficulty": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "type": "progress-view",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659597,
+      "nanoseconds": 873000000
+    }
+  },
+  {
+    "id": "C3zuGpZkxOPyENJPzxFf",
+    "difficulty": null,
+    "progress": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659625,
+      "nanoseconds": 816000000
+    },
+    "source": "topics",
+    "type": "view-topic",
+    "subtopic": "polynomials",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": "preliminaries"
+  },
+  {
+    "id": "C7gUIbjH2uRbU267w2cr",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659597,
+      "nanoseconds": 806000000
+    },
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "progress": null,
+    "type": "progress-view",
+    "topic": null,
+    "subtopic": null,
+    "difficulty": null,
+    "source": "progress"
+  },
+  {
+    "id": "E4g6vDDOZUhGNcjuHv8H",
+    "subtopic": "Integer Exponents",
+    "topic": "Preliminaries",
+    "difficulty": "easy",
+    "progress": "Done",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659077,
+      "nanoseconds": 505000000
+    },
+    "type": "practice",
+    "source": "practice"
+  },
+  {
+    "id": "FGKua17Eae2EiMho1HI1",
+    "difficulty": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": null,
+    "progress": null,
+    "subtopic": null,
+    "source": "progress",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757663084,
+      "nanoseconds": 974000000
+    },
+    "type": "progress-view"
+  },
+  {
+    "id": "FbaRrqvTv2bosDNFdEIo",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660434,
+      "nanoseconds": 981000000
+    },
+    "type": "view-topic",
+    "subtopic": "integer-exponents",
+    "source": "topics",
+    "difficulty": null,
+    "progress": null,
+    "topic": "preliminaries",
+    "userEmail": "akinlademuheebah0526@gmail.com"
+  },
+  {
+    "id": "GDZBMSbynIBaj4DOaWvt",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757661111,
+      "nanoseconds": 96000000
+    },
+    "progress": null,
+    "topic": null,
+    "type": "progress-view",
+    "difficulty": null,
+    "subtopic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "source": "progress"
+  },
+  {
+    "id": "IAcUn9zuiDvjvtrXNsEJ",
+    "progress": null,
+    "subtopic": null,
+    "type": "progress-view",
+    "topic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757661876,
+      "nanoseconds": 784000000
+    },
+    "difficulty": null,
+    "source": "progress",
+    "userEmail": "akinlademuheebah0526@gmail.com"
+  },
+  {
+    "id": "IYfpsy00SSR7N8hlcbt3",
+    "type": "progress-view",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757661166,
+      "nanoseconds": 841000000
+    },
+    "source": "progress",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "subtopic": null,
+    "topic": null,
+    "difficulty": null,
+    "progress": null
+  },
+  {
+    "id": "JEbyiaiPvlkdkkhmGpT0",
+    "subtopic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "progress": null,
+    "topic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757658301,
+      "nanoseconds": 485000000
+    },
+    "difficulty": null,
+    "type": "progress-view",
+    "source": "progress"
+  },
+  {
+    "id": "JOl6Pf7j3w8bZSR35YDA",
+    "type": "progress-view",
+    "subtopic": null,
+    "difficulty": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": null,
+    "progress": null,
+    "source": "progress",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659079,
+      "nanoseconds": 840000000
+    }
+  },
+  {
+    "id": "KE6bHxhukOdS2QlsRhAR",
+    "subtopic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659583,
+      "nanoseconds": 890000000
+    },
+    "progress": null,
+    "source": "progress",
+    "difficulty": null,
+    "topic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "type": "progress-view"
+  },
+  {
+    "id": "LHYbeOoHOFHJiPjZb8St",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "difficulty": null,
+    "type": "progress-view",
+    "topic": null,
+    "subtopic": null,
+    "progress": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757662924,
+      "nanoseconds": 588000000
+    },
+    "source": "progress"
+  },
+  {
+    "id": "MQZgom8ky2wBGbISLjgU",
+    "difficulty": "easy",
+    "source": "practice",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "subtopic": "Integer Exponents",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659073,
+      "nanoseconds": 940000000
+    },
+    "progress": "Unattempted",
+    "topic": "Preliminaries",
+    "type": "practice"
+  },
+  {
+    "id": "Md18HgHm80bce1g6IGqP",
+    "difficulty": null,
+    "progress": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660423,
+      "nanoseconds": 545000000
+    },
+    "type": "progress-view",
+    "topic": null,
+    "subtopic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "source": "progress"
+  },
+  {
+    "id": "Ngz93TcWO6PRSzAkqC9K",
+    "difficulty": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "type": "progress-view",
+    "topic": null,
+    "progress": null,
+    "subtopic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660471,
+      "nanoseconds": 280000000
+    },
+    "source": "progress"
+  },
+  {
+    "id": "NjOVic2urSgMlCO91iCo",
+    "type": "progress-view",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660159,
+      "nanoseconds": 287000000
+    },
+    "source": "progress",
+    "subtopic": null,
+    "topic": null,
+    "progress": null,
+    "difficulty": null
+  },
+  {
+    "id": "ONjm843C1dMBgaPRjPmM",
+    "type": "progress-view",
+    "source": "progress",
+    "progress": null,
+    "difficulty": null,
+    "subtopic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757658545,
+      "nanoseconds": 882000000
+    },
+    "topic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com"
+  },
+  {
+    "id": "OXU66es235rssOqOOt19",
+    "topic": "Preliminaries",
+    "progress": "Done",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "source": "practice",
+    "difficulty": "easy",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660043,
+      "nanoseconds": 184000000
+    },
+    "subtopic": "Integer Exponents",
+    "type": "practice"
+  },
+  {
+    "id": "RGVp6aA6wrgVhci57clK",
+    "source": "progress",
+    "topic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757661111,
+      "nanoseconds": 169000000
+    },
+    "subtopic": null,
+    "difficulty": null,
+    "type": "progress-view",
+    "progress": null,
+    "userEmail": "akinlademuheebah0526@gmail.com"
+  },
+  {
+    "id": "X8qQR7Dbcz60WKKtL77b",
+    "source": "progress",
+    "subtopic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": null,
+    "difficulty": null,
+    "progress": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757658301,
+      "nanoseconds": 563000000
+    },
+    "type": "progress-view"
+  },
+  {
+    "id": "XEPrYAtW4wRDoiIQAm6n",
+    "source": "progress",
+    "topic": null,
+    "subtopic": null,
+    "progress": null,
+    "type": "progress-view",
+    "difficulty": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757658545,
+      "nanoseconds": 948000000
+    },
+    "userEmail": "akinlademuheebah0526@gmail.com"
+  },
+  {
+    "id": "XklOJgZZ9bQOUmYzirts",
+    "difficulty": null,
+    "source": "progress",
+    "topic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757662071,
+      "nanoseconds": 534000000
+    },
+    "type": "progress-view",
+    "subtopic": null,
+    "progress": null,
+    "userEmail": "akinlademuheebah0526@gmail.com"
+  },
+  {
+    "id": "YjLHpDxsoh1IiKKmZ3ao",
+    "subtopic": "rational-exponents",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "difficulty": null,
+    "source": "topics",
+    "topic": "preliminaries",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757658469,
+      "nanoseconds": 558000000
+    },
+    "progress": null,
+    "type": "view-topic"
+  },
+  {
+    "id": "eOPy1RtuvJ3xOJpHVzzF",
+    "source": "practice",
+    "type": "practice",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660038,
+      "nanoseconds": 619000000
+    },
+    "progress": "loaded",
+    "subtopic": "Integer Exponents",
+    "difficulty": "easy",
+    "topic": "Preliminaries"
+  },
+  {
+    "id": "hjy0byeE263Ka7KVa40J",
+    "progress": null,
+    "subtopic": null,
+    "topic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "source": "progress",
+    "type": "progress-view",
+    "difficulty": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659080,
+      "nanoseconds": 54000000
+    }
+  },
+  {
+    "id": "hyBNfshg0WyXN27XAWjS",
+    "topic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "type": "progress-view",
+    "subtopic": null,
+    "difficulty": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757662924,
+      "nanoseconds": 659000000
+    },
+    "progress": null,
+    "source": "progress"
+  },
+  {
+    "id": "l57VEiemV4bbTiDGpbbe",
+    "difficulty": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": null,
+    "subtopic": null,
+    "progress": null,
+    "source": "progress",
+    "type": "progress-view",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660471,
+      "nanoseconds": 2000000
+    }
+  },
+  {
+    "id": "mxiKXN7R7LlbfwKicJhQ",
+    "type": "practice",
+    "source": "practice",
+    "progress": "Done",
+    "difficulty": "easy",
+    "subtopic": "Integer Exponents",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": "Preliminaries",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660059,
+      "nanoseconds": 819000000
+    }
+  },
+  {
+    "id": "p8rCUM8BOzhUFF43d3Y7",
+    "source": "topics",
+    "type": "view-topic",
+    "topic": "preliminaries",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659655,
+      "nanoseconds": 838000000
+    },
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "subtopic": "integer-exponents",
+    "difficulty": null,
+    "progress": null
+  },
+  {
+    "id": "sUVMIdEnD0zC32Bg4Fvq",
+    "difficulty": null,
+    "topic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "progress": null,
+    "type": "progress-view",
+    "subtopic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659642,
+      "nanoseconds": 277000000
+    },
+    "source": "progress"
+  },
+  {
+    "id": "t6wYH16W4Cnq0FWfwaGU",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "progress": null,
+    "type": "progress-view",
+    "source": "progress",
+    "topic": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659814,
+      "nanoseconds": 945000000
+    },
+    "subtopic": null,
+    "difficulty": null
+  },
+  {
+    "id": "uXCE2ZCG0QS4ROyzP8c3",
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": "preliminaries",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660435,
+      "nanoseconds": 883000000
+    },
+    "progress": null,
+    "subtopic": "integer-exponents",
+    "type": "view-topic",
+    "difficulty": null,
+    "source": "topics"
+  },
+  {
+    "id": "uayXejstWY4OA8xGJj0g",
+    "source": "progress",
+    "progress": null,
+    "type": "progress-view",
+    "topic": null,
+    "subtopic": null,
+    "difficulty": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660423,
+      "nanoseconds": 490000000
+    }
+  },
+  {
+    "id": "vBBmDlG8aW6CrRUe45iF",
+    "progress": null,
+    "type": "progress-view",
+    "source": "progress",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757660063,
+      "nanoseconds": 960000000
+    },
+    "subtopic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "topic": null,
+    "difficulty": null
+  },
+  {
+    "id": "vcdpkoLqKD9QVSwFVDvK",
+    "difficulty": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "subtopic": "polynomials",
+    "source": "topics",
+    "type": "view-topic",
+    "topic": "preliminaries",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757658160,
+      "nanoseconds": 21000000
+    },
+    "progress": null
+  },
+  {
+    "id": "xldrcmJrtyb7mhtTJmTL",
+    "subtopic": null,
+    "topic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "source": "progress",
+    "progress": null,
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757661876,
+      "nanoseconds": 714000000
+    },
+    "type": "progress-view",
+    "difficulty": null
+  },
+  {
+    "id": "zb18TuJ5op3Rn0pSvsSR",
+    "difficulty": null,
+    "subtopic": null,
+    "source": "progress",
+    "topic": null,
+    "userEmail": "akinlademuheebah0526@gmail.com",
+    "timestamp": {
+      "type": "firestore/timestamp/1.0",
+      "seconds": 1757659814,
+      "nanoseconds": 885000000
+    },
+    "type": "progress-view",
+    "progress": null
+  }
+]

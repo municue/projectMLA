@@ -1,0 +1,104 @@
+.topics-page {
+  width: 44.2%;
+  margin-left: calc(23.2%);
+  height: 100vh;
+  background: #000;
+  color: #fff;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: black black;
+  overflow-y: auto;
+  padding-top: 70px;
+}
+
+/* Header */
+.topics-header {
+  position: fixed;
+  width: 40.7%;
+  top: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #333;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+.topics-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* Grid layout: two columns, three rows */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+  padding: 20px;
+}
+
+/* Card styling */
+.topic-card {
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: black;
+}
+
+.topic-card:hover {
+  border-color: #333;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.topic-card.open {
+  border-color: #777;
+  background: black;
+}
+
+/* Title layout inside card */
+.topic-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: white;
+}
+
+/* Subtopic list inside expanded card */
+.subtopics-list {
+  list-style: none;
+  padding-left: 14px;
+  margin: 8px 0 0 0;
+}
+
+.subtopics-list .subtopic:hover {
+  color: cyan;
+}
+
+.subtopics-list .subtopic {
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.subtopics-list .subtopic:hover,
+.subtopics-list .subtopic.selected {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

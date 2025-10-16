@@ -1,0 +1,254 @@
+.sidebar {
+  width: 23.4%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  border-right: 1px solid #333;
+  z-index: 10;
+  
+}
+
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; /* ✅ move logo to left */
+  align-items: center;
+  padding: 1px 0 3px 0;     /* ✅ match padding like menu items */
+  position: relative;
+}
+
+/* Infinity logo with glow */
+.logo-img {
+  width: 180px;
+  height: auto;
+  /*filter: drop-shadow(0 0 16px magenta);*/
+  /*animation: glow 2s ease-in-out infinite alternate;*/
+}
+
+
+/* Neon glowing effect */
+@keyframes glow {
+  0% {
+    filter: drop-shadow(0 0 4px cyan) drop-shadow(0 0 8px magenta);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px magenta) drop-shadow(0 0 24px cyan);
+  }
+  100% {
+    filter: drop-shadow(0 0 4px cyan) drop-shadow(0 0 8px magenta);
+  }
+}
+
+
+@keyframes pulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.7; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  padding: 4px;
+  border-radius: 30px;
+  cursor: pointer;
+  color: #ccc;
+  text-decoration: none; /* 👈 removes underline */
+  transition: background 0.2s, color 0.2s;
+}
+
+.menu li.active a {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+
+.menu a.active .icon,
+.menu a.active .label {
+  color: #fff;
+}
+
+.icon {
+  font-size: 1.4rem;
+}
+
+.action-button {
+  margin-bottom: 16px; 
+  padding: 12px;
+  background:black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+
+.action-button:hover {
+  background: black;
+  border: 1px solid cyan;
+  color:cyan;
+}
+
+.sidebar-profile {
+  margin-top: auto;
+  padding: 16px;
+  background-color: #111;
+  border-top: 1px solid #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Container for avatar & dropdown */
+.sidebar-profile-container {
+  margin-top: auto;
+  padding: 16px;
+  position: relative;
+}
+
+/* Avatar circle */
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border: 1px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profile-avatar:hover {
+  color: cyan;
+  border: 1px solid cyan;
+}
+
+/* Dropdown menu */
+.profile-menu {
+  position: absolute;
+  bottom: 60px;
+  left: 16px;
+  width: 200px;
+  background: black;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Show email in dropdown */
+.profile-email {
+  font-size: 0.75rem;
+  color: #ccc;
+  overflow-wrap: anywhere;
+}
+
+/* Logout button style */
+.logout-btn {
+  padding: 8px 12px;
+  background: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 20px;
+  margin-right: 20px;
+    
+}
+
+.logout-btn:hover{
+  border: 1px solid cyan;
+  color: cyan;
+  background: black;
+}
+
+/* ========================= */
+/* 📱 Responsive Sidebar (Mobile <768px) */
+/* ========================= */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px; /* collapse width */
+    padding: 10px;
+    align-items: center;
+  }
+
+  .logo-container {
+    justify-content: center;
+  }
+
+  .logo-img {
+    width: 40px; /* shrink logo */
+    height: auto;
+  }
+
+  /* Hide labels, keep icons only */
+  .menu a {
+    justify-content: center;
+    gap: 0;
+  }
+  .menu a .label {
+    display: none;
+  }
+
+  /* Action button smaller */
+  .action-button {
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  /* Avatar stays bottom-aligned */
+  .sidebar-profile-container {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .profile-menu {
+    left: auto;
+    right: 10px;
+    width: 160px;
+    padding: 12px;
+  }
+}
+
+/* ========================= */
+/* 📱 Responsive Sidebar (Mobile <480px) */
+/* ========================= */
+@media (max-width: 480px) {
+  .sidebar {
+    display: none; /* hide sidebar on very small screens */
+  }
+}

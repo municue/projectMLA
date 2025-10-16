@@ -1,0 +1,144 @@
+.search-panel {
+  width: 33.4%;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  border-left: 1px solid #333;
+  padding-top: 80px;
+  overflow-y: auto;
+}
+
+
+
+.search-header {
+  position: fixed;
+  width: 30%;
+  top: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background:black;  
+  z-index: 5;
+  padding-left: 0;
+}
+
+/* Chrome, Edge, Safari */
+.search-panel::-webkit-scrollbar {
+  width: 4px;
+}
+.search-panel::-webkit-scrollbar-thumb {
+  background-color: black;
+  border-radius: 2px;
+}
+.search-panel::-webkit-scrollbar-track {
+  background: black;
+}
+
+/* Search Bar */
+.search-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color:black;
+  padding: 10px 14px;
+  border-radius: 9999px;
+  border: 1px solid #333;
+  margin-top: 20px;
+}
+
+.search-box:hover{
+  border-color: white;
+  background: black;
+}
+
+.search-icon {
+  font-size: 1.1rem;
+  color: #777;
+  margin-right: 10px;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  flex-grow: 1;
+  font-size: 0.95rem;
+}
+
+.search-input::placeholder {
+  color: #aaa;
+}
+
+
+/* Card Containers (like X) */
+.panel-box {
+  background-color: black;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #333;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #e6e6e6;
+}
+
+/* List Items */
+.panel-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.panel-box li {
+  padding: 10px 0;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-radius: 8px;
+}
+
+.panel-box li:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ========================= */
+/* 📱 Responsive Search Panel */
+/* ========================= */
+
+/* Tablet: shrink width */
+@media (max-width: 768px) {
+  .search-panel {
+    width: 240px;
+    padding: 16px;
+  }
+
+  .search-header {
+    width: 220px;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .panel-box {
+    padding: 12px;
+  }
+}
+
+/* Mobile: completely hide (like X Explore tab hidden by default) */
+@media (max-width: 480px) {
+  .search-panel {
+    display: none;
+  }
+
+  .search-header {
+    display: none;
+  }
+}

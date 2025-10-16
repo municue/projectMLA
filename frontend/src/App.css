@@ -1,0 +1,12 @@
+/* src/styles/App.css */
+
+.app-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  font-family: Arial, sans-serif;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+

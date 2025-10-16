@@ -1,0 +1,65 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 🔹 Helper functions
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+    function isUser() {
+      return request.auth != null;
+    }
+
+    // 🔹 Public collections (anyone can read)
+    match /topics/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /subtopics/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /formulas/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /questions/{docId} {
+      allow read: if true; // students can load practice questions
+      allow write: if isAdmin(); // only admin can add/update questions
+    }
+
+    match /homepage_feed/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 🔹 History (each user can log their own)
+    match /history/{docId} {
+      allow read, write: if isUser();
+    }
+
+    // 🔹 Users data
+    match /users/{userId} {
+      allow read: if isUser() && request.auth.uid == userId; // user reads own profile
+      allow write: if isUser() && request.auth.uid == userId;
+    }
+
+    // 🔹 Progress tracking
+    match /users/{userId}/progress/{docId} {
+      allow read, write: if isUser() && request.auth.uid == userId;
+    }
+
+    match /users/{userId}/practiceProgress/{docId} {
+      allow read, write: if isUser() && request.auth.uid == userId;
+    }
+
+    // 🔹 Calculations (read/write only for authenticated users)
+    match /calculations/{docId} {
+      allow read, write: if isUser();
+    }
+  }
+}

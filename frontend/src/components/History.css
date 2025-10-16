@@ -1,0 +1,225 @@
+.history-container {
+  width: 44.2%;
+  margin-left: calc(23.2%);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #000;
+  color: #fff;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: black black;
+}
+
+.history-header {
+  position: fixed;
+  width: 40.7%;
+  top: 0;
+  height: 60px;
+  display: flex;
+  justify-content: space-between; /* push menu to far right */
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #333;
+  background: rgba(0, 0, 0, 0.3); 
+  backdrop-filter: blur(5px);  
+  z-index: 5;
+}
+
+.history-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.history-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  padding-top: 70px;
+}
+
+.history-card {
+  padding: 12px;
+  border-bottom: 1px solid #333;
+  transition: background 0.2s ease;
+}
+
+.history-card:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.history-header-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.history-type {
+  font-weight: bold;
+  color: #fff;
+}
+
+.history-menu {
+  position: relative;
+}
+
+.menu-icon {
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: white;
+}
+
+.history-dropdown {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  width: 200px; /* wider dropdown */
+  background: black;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 8px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* space between buttons */
+}
+
+.history-dropdown button {
+  width: 100%;
+  background: black;
+  color: white;
+  border: 1px solid #777;
+  border-radius: 6px;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.history-dropdown button:hover {
+  background: black;
+  color: cyan;
+  border: 1px solid cyan;
+
+}
+
+.history-card.selected {
+  border-bottom: 1px solid #777;
+  border-radius: 6px;
+  background: #111;
+}
+
+/* Toast - moved higher */
+.toast {
+  position: fixed;
+  top: 80px; /* higher up */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  z-index: 50;
+  animation: fadeInOut 3s ease;
+}
+
+.toast.success {
+  border: 1px solid limegreen;
+  color: limegreen;
+  background: black;
+}
+
+.toast.error {
+  border: 1px solid red;
+  color: red;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, 20px); }
+  10%, 90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, 20px); }
+}
+
+/* Status stickers */
+.history-progress {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.history-progress.Done {
+  background: limegreen;
+}
+
+.history-progress.InProgress {
+  background: gold;
+}
+
+.history-progress.loaded {
+  background: cyan;
+}
+
+.history-progress.Unattempted {
+  background: red;
+}
+
+/* Confirmation Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: black;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  text-align: center;
+  width: 320px;
+  color: white;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.modal-actions button {
+  padding: 8px 14px;
+  border: 1px solid white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  background: black;
+  color: green;
+}
+
+.modal-actions button:hover {
+  border: 1px solid green;
+  color: green;
+}
+
+.modal-actions .danger {
+  background: black;
+  color: red;
+}
+
+.modal-actions .danger:hover {
+  background: black;
+  color: red;
+  border: 1px solid red;
+}

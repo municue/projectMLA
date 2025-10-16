@@ -1,0 +1,84 @@
+.formula-content-page {
+  height: 100%;
+  background: #000;
+  color: #fff;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: black black;
+  overflow-y: auto;
+  padding-top: 70px;
+}
+
+/* Body */
+.formula-content-body {
+  padding: 20px;
+}
+
+/* Card container */
+.formula-content-card {
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.2s, background 0.2s;
+
+  /* ✅ Min height but expandable */
+  width: 90%;
+  max-width: 650px;
+  min-height: 250px;
+  max-height: 500px;
+  margin: 0 auto;
+
+  /* ✅ Scroll inside if overflow */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar inside card */
+.formula-content-card::-webkit-scrollbar {
+  width: 6px;
+}
+.formula-content-card::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 3px;
+}
+.formula-content-card::-webkit-scrollbar-track {
+  background: black;
+}
+
+/* Formula list */
+.formula-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.formula-list li {
+  padding: 12px 0;
+  font-size: 18px; /* ✅ bigger for readability */
+}
+
+.formula-list li:last-child {
+  border-bottom: none;
+}
+
+.formula {
+  font-family: monospace;
+  color: cyan;
+  font-size: 1.2rem; /* ✅ larger formula text */
+}
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

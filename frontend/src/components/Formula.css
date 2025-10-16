@@ -1,0 +1,67 @@
+.formula-page {
+  height: 100%;
+  background: #000;
+  color: #fff;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: black black;
+  overflow-y: auto;
+  padding-top: 70px;
+}
+
+.formula-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* Grid layout */
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+  padding: 20px;
+}
+
+/* Topic card style */
+.formula-card {
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  background: black;
+  transition: border-color 0.2s;
+}
+
+.formula-card:hover {
+  background: rgba(255, 255, 255, 0.05)
+}
+
+.formula-card.open {
+  border: 1px solid #777;
+  background: black;
+}
+
+.formula-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subtopic {
+  margin-bottom: 4px;
+  list-style: none;
+}
+
+.subtopic a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: #e6e6e6;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.subtopic a:hover {
+  color: #0ff;
+}

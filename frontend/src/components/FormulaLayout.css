@@ -1,0 +1,88 @@
+.formula-layout {
+  width: 44.2%;
+  margin-left: 23.2%;
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding-top: 70px; /* space for fixed header */
+}
+
+/* Header (shared for both Formula + FormulaContent) */
+.formula-layout-header {
+  position: fixed;
+  width: 40.7%;
+  top: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* space out title + back button */
+  padding: 0 20px;
+  border-bottom: 1px solid #333;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+.formula-layout-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* Hide or restyle scrollbar (Chrome, Edge, Safari) */
+.formula-layout::-webkit-scrollbar,
+.formula-page::-webkit-scrollbar,
+.formula-content-page::-webkit-scrollbar {
+  width: 6px; /* smaller scrollbar */
+}
+
+.formula-layout::-webkit-scrollbar-thumb,
+.formula-page::-webkit-scrollbar-thumb,
+.formula-content-page::-webkit-scrollbar-thumb {
+  background-color: black; /* 👈 black scrollbar */
+  border-radius: 3px;
+}
+
+.formula-layout::-webkit-scrollbar-track,
+.formula-page::-webkit-scrollbar-track,
+.formula-content-page::-webkit-scrollbar-track {
+  background: black; /* 👈 black track instead of white */
+}
+
+/* Firefox */
+.formula-layout,
+.formula-page,
+.formula-content-page {
+  scrollbar-width: thin;
+  scrollbar-color: black black; /* thumb track */
+}
+
+.formula-layout {
+  padding-top: 5px; /* was fine but made it look far */
+}
+
+/* Inside FormulaContent.css */
+.formula-content-body {
+  padding: 20px;
+  padding-top: 20px; 
+}
+
+/* Back button */
+.back-button {
+  padding: 6px 12px;
+  border: 1px solid white;
+  border-radius: 6px;
+  color: white;
+  background: transparent;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.back-button:hover {
+  background: black;
+  border: 1px solid cyan;
+  color: cyan;
+}

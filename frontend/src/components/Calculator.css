@@ -1,0 +1,566 @@
+.calc-page {
+  width: 44.2%;
+  margin-left: calc(23.2%);
+  height: 100vh;
+  background: #000;
+  color: #fff;
+  box-sizing: border-box;
+  padding-top: 70px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.calc-header {
+  position: fixed;
+  top: 0;
+  width: 40.7%;
+  height: 60px;
+  background-color: rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  display: flex; 
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #333;
+  z-index: 5;
+}
+
+.calc-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.calc-body {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+  position: relative;
+  padding: 2px;
+}
+
+.calc-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Dark custom scrollbar */
+.calc-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.calc-scroll::-webkit-scrollbar-track {
+  background: #000;
+}
+.calc-scroll::-webkit-scrollbar-thumb {
+  background: #111;
+  border-radius: 6px;
+}
+.calc-scroll::-webkit-scrollbar-thumb:hover {
+  background: #222;
+}
+
+.calc-footer {
+  background: #000;
+  border-top: 1px solid #333;
+  padding: 12px 20px 16px;
+  z-index: 2;
+  box-shadow: 0 -1px 10px rgba(0,0,0,0.3);
+}
+
+.calc-display input {
+  width: 95%;
+  padding: 12px;
+  background: #16181c;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(60px, 1fr));
+  gap: 8px;
+}
+
+.calc-buttons button {
+  padding: 12px;
+  background: #1a1c20;
+  border: 1px solid white;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calc-buttons button:hover {
+  background: #2a2c30;
+}
+
+.calc-result {
+  margin-top: 20px;
+  background: black;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.result-text {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.steps-list {
+  margin-top: 1rem;
+}
+
+.step-block {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-left: 3px solid #333;
+  background: #0a0a0a;
+  border-radius: 6px;
+}
+
+.step-block strong {
+  color: cyan;
+  font-size: 1.05rem;
+}
+
+/* Detailed Explanation (Ordered List) */
+.explanation-box ol {
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.explanation-box li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.explanation-box li::marker {
+  color: cyan;
+  font-weight: bold;
+}
+
+.question-box, .answer-box {
+  background: black;
+  padding: 14px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.answer-box {
+  border: 1px solid cyan;
+  margin-top: 20px;
+}
+
+/* Keyboard */
+.keyboard-wrapper {
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 10px;
+  margin-top: 5px;
+  background: black;
+}
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+.key-btn {
+  padding: 12px 10px;
+  font-size: 14px;
+  background-color: #1a1c20;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}
+
+.key-btn:hover {
+  background: #2a2c30;
+  transform: scale(1.05);
+}
+
+.key-btn:active {
+  transform: scale(0.95);
+  background-color: black;
+  color: white;
+}
+
+.key-btn.wide {
+  grid-column: span 2;
+}
+
+.key-btn.extra-wide {
+  grid-column: span 3;
+}
+
+/* Toggle key style for ABC/123 */
+.key-btn.switch-btn {
+  background-color: #1a1c20;
+  border: 1px solid #333;
+  color: #777;
+  font-weight: bold;
+}
+
+.key-btn.switch-btn:hover {
+  background-color: black;
+  color: cyan;
+  border: 1px solid cyan;
+}
+
+.display-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.expression-input {
+  flex: 1;
+  padding: 12px;
+  background: black;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+
+.toggle-btn {
+  background-color: #1a1c20;
+  border: 1px solid #333;
+  color: #777;
+  font-weight: bold;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-btn:hover {
+  background-color: black;
+  color: cyan;
+  border: 1px solid cyan;
+}
+
+/* Confirmation Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: black;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  text-align: center;
+  width: 320px;
+  color: white;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.modal-actions button {
+  padding: 8px 14px;
+  border: 1px solid white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  background: black;
+  color: green;
+}
+
+.modal-actions button:hover {
+  border: 1px solid green;
+  color: green;
+}
+
+.modal-actions .danger {
+  background: black;
+  color: red;
+}
+
+.modal-actions .danger:hover {
+  background: black;
+  color: red;
+  border: 1px solid red;
+}
+
+.calc-menu {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+}
+
+.menu-icon {
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: white;
+  background: none;
+  border: none;
+}
+
+.calc-dropdown {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  width: 200px;
+  background: black;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 8px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calc-dropdown button {
+  width: 100%;
+  background: black;
+  color: white;
+  border: 1px solid #777;
+  border-radius: 6px;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.calc-dropdown button:hover {
+  background: black;
+  color: cyan;
+  border: 1px solid cyan;
+}
+
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: black;
+  color: limegreen;
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid limegreen;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+  animation: fadeInOut 3s ease;
+}
+
+.toast.success {
+  border-color: limegreen;
+  color: limegreen;
+}
+
+.toast-btn {
+  background: black;
+  border: 1px solid limegreen;
+  color: limegreen;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.toast.success .toast-btn {
+  border-color: limegreen;
+  color: limegreen;
+}
+
+/* Past calculations modal scroll */
+.history-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  text-align: left;
+  padding-right: 6px;
+}
+
+.history-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.history-scroll::-webkit-scrollbar-track {
+  background: #000;
+}
+.history-scroll::-webkit-scrollbar-thumb {
+  background: #111;
+  border-radius: 6px;
+}
+.history-scroll::-webkit-scrollbar-thumb:hover {
+  background: #222;
+}
+
+/* Fake blinking cursor in expression input */
+.expression-input {
+  font-family: monospace;
+  caret-color: transparent; /* hide native caret */
+}
+
+.expression-input::selection {
+  background: transparent; /* disable blue highlight */
+}
+
+.hidden-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.expression-display {
+  flex: 1;
+  padding: 12px;
+  background: black;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.1rem;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+.fake-caret {
+  display: inline-block;
+  width: 1px;          /* thin cursor */
+  height: 1.2em;
+  background: cyan;    /* caret color */
+  vertical-align: bottom;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, 20px); }
+  10%, 90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, 20px); }
+}
+
+/* Fade-in animation for steps and final answer */
+@keyframes fadeInStep {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeInStep 0.6s ease forwards;
+}
+
+/* Prevent text/math from overflowing boxes */
+.question-box,
+.step-block,
+.answer-box {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;  /* allow wrapping */
+}
+
+/* Make MathJax formulas wrap too */
+.MJX-TEX {
+  white-space: normal !important;
+  overflow-x: auto;
+  display: block;
+  max-width: 100%;
+}
+
+/* Ensure step/explanation text is readable */
+.step-box,
+.question-box,
+.answer-box {
+  line-height: 1.6;    /* add vertical spacing */
+  letter-spacing: 0.5px; /* spacing between letters */
+  word-spacing: 4px;   /* spacing between words */
+  white-space: normal; /* allow wrapping */
+}
+
+/* Prevent horizontal scrolling site-wide */
+body, html, .calc-page {
+  overflow-x: hidden;
+}
+
+/* Make steps and answers wrap instead of forcing sideways scroll */
+.steps-list,
+.step-block,
+.question-box,
+.answer-box {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Style for readable text explanations */
+.step-text {
+  margin: 6px 0 2px;
+  font-size: 1rem;
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.step-math {
+  margin: 2px 0 12px;
+  font-size: 1.1rem;
+}
+
+
+.explanation-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 6px 0;
+  color: #ccc;
+  word-spacing: 4px;
+  letter-spacing: 0.5px;
+  white-space: normal;
+}
+
+/* Step layout improvements */
+.step-block-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;   /* space between explanation and equation */
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;  /* space between steps */
+}
+
