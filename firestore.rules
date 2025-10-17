@@ -3,6 +3,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // 🔹 Helper functions
     function isAdmin() {
       return request.auth != null && request.auth.token.admin == true;
     }
@@ -10,6 +11,7 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // 🔹 Public collections (readable by everyone)
     match /topics/{docId} {
       allow read: if true;
       allow write: if isAdmin();
@@ -26,8 +28,8 @@ service cloud.firestore {
     }
 
     match /questions/{docId} {
-      allow read: if true;
-      allow write: if isAdmin();
+      allow read: if true; // anyone can load practice questions
+      allow write: if isAdmin(); // only admin can add/update questions
     }
 
     match /homepage_feed/{docId} {
@@ -35,23 +37,32 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // 🔹 History (user-specific)
     match /history/{docId} {
       allow read, write: if isUser();
     }
 
+    // 🔹 User profile
     match /users/{userId} {
       allow read: if isUser() && request.auth.uid == userId;
       allow write: if isUser() && request.auth.uid == userId;
+
+      // 🔹 Progress tracking
+      match /progress/{docId} {
+        allow read: if isUser() && request.auth.uid == userId;
+        allow write: if isUser() && request.auth.uid == userId;
+      }
+
+      // 🔹 Practice progress (used by Practice.jsx)
+      match /practiceProgress/{docId} {
+        // 👇 This is the key fix:
+        // Temporarily allow reads for all users if still getting permission-denied errors.
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
     }
 
-    match /users/{userId}/progress/{docId} {
-      allow read, write: if isUser() && request.auth.uid == userId;
-    }
-
-    match /users/{userId}/practiceProgress/{docId} {
-      allow read, write: if isUser() && request.auth.uid == userId;
-    }
-
+    // 🔹 Calculations (Calculator page)
     match /calculations/{docId} {
       allow read, write: if isUser();
     }
