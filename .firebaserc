@@ -1,5 +1,8 @@
 {
   "projects": {
     "default": "mla-math-app"
-  }
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

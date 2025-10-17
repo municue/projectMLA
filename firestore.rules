@@ -3,7 +3,6 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // 🔹 Helper functions
     function isAdmin() {
       return request.auth != null && request.auth.token.admin == true;
     }
@@ -11,7 +10,6 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // 🔹 Public collections (anyone can read)
     match /topics/{docId} {
       allow read: if true;
       allow write: if isAdmin();
@@ -28,8 +26,8 @@ service cloud.firestore {
     }
 
     match /questions/{docId} {
-      allow read: if true; // students can load practice questions
-      allow write: if isAdmin(); // only admin can add/update questions
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /homepage_feed/{docId} {
@@ -37,18 +35,15 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // 🔹 History (each user can log their own)
     match /history/{docId} {
       allow read, write: if isUser();
     }
 
-    // 🔹 Users data
     match /users/{userId} {
-      allow read: if isUser() && request.auth.uid == userId; // user reads own profile
+      allow read: if isUser() && request.auth.uid == userId;
       allow write: if isUser() && request.auth.uid == userId;
     }
 
-    // 🔹 Progress tracking
     match /users/{userId}/progress/{docId} {
       allow read, write: if isUser() && request.auth.uid == userId;
     }
@@ -57,7 +52,6 @@ service cloud.firestore {
       allow read, write: if isUser() && request.auth.uid == userId;
     }
 
-    // 🔹 Calculations (read/write only for authenticated users)
     match /calculations/{docId} {
       allow read, write: if isUser();
     }
