@@ -1,4 +1,3 @@
-// src/components/Practice.jsx
 import { useState, useEffect } from "react";
 import "./Practice.css";
 import { FaEllipsisV } from "react-icons/fa";
@@ -114,22 +113,25 @@ export default function Practice() {
   const [difficulty, setDifficulty] = useState("");
   const [elapsed, setElapsed] = useState(0);
 
+  // ✅ Load questions
   const handleLoadQuestions = async () => {
-    if (!selectedTopic || !selectedSubtopic || !difficulty || !user?.email) return;
+    if (!selectedTopic || !selectedSubtopic || !difficulty || !user?.uid) return;
     try {
       const docId = `${selectedTopic.toLowerCase().replace(/\s+/g, "-")}-${selectedSubtopic
         .toLowerCase()
         .replace(/\s+/g, "-")}`;
       const ref = doc(db, "questions", docId);
       const snap = await getDoc(ref);
+
       if (snap.exists()) {
         const data = snap.data();
         const items = data.difficultyLevels[difficulty] || [];
+
         const userProgressPromises = items.map(async (q) => {
           const progressRef = doc(
             db,
             "users",
-            user.email,
+            user.uid,
             "practiceProgress",
             `${docId}-${q.id}`
           );
@@ -143,8 +145,10 @@ export default function Practice() {
               : "Unattempted",
           };
         });
+
         const formatted = await Promise.all(userProgressPromises);
         setPracticeItems(formatted);
+
         logHistory({
           userEmail: user.email,
           type: "practice",
@@ -154,33 +158,41 @@ export default function Practice() {
           progress: "loaded",
           source: "practice",
         });
+
         startSession({
           userEmail: user.email,
           topic: selectedTopic,
           subtopic: selectedSubtopic,
           type: "practice",
         });
+
         setElapsed(0);
         setShowForm(false);
-      } else setPracticeItems([]);
+      } else {
+        setPracticeItems([]);
+      }
     } catch (err) {
       console.error("Failed to fetch questions:", err);
       setPracticeItems([]);
     }
   };
 
+  // ✅ Update question status
   const updateStatus = async (id, status) => {
-    if (!user?.email) return;
+    if (!user?.uid) return;
+
     const docId = `${selectedTopic.toLowerCase().replace(/\s+/g, "-")}-${selectedSubtopic
       .toLowerCase()
       .replace(/\s+/g, "-")}`;
+
     const progressRef = doc(
       db,
       "users",
-      user.email,
+      user.uid,
       "practiceProgress",
       `${docId}-${id}`
     );
+
     try {
       await setDoc(progressRef, {
         topic: selectedTopic,
@@ -190,6 +202,7 @@ export default function Practice() {
         status,
         updatedAt: new Date(),
       });
+
       setPracticeItems((prev) =>
         prev.map((item) => (item.id === id ? { ...item, status } : item))
       );
@@ -198,35 +211,24 @@ export default function Practice() {
     }
   };
 
+  // ✅ Session tracking
   useEffect(() => {
     const interval = setInterval(() => setElapsed(getSessionElapsed()), 1000);
     return () => clearInterval(interval);
   }, []);
+
   useEffect(() => () => user?.email && endSession(), [user]);
 
   const filteredItems = practiceItems.filter((item) => item.status === activeTab);
 
-  // ✅ Render a solution step (Calculator-like behavior)
+  // ✅ Render steps
   const renderStep = (step, stepNumber) => {
-    // Skip invalid or placeholder steps
-    if (
-      !step ||
-      !step.content && !step.parts ||
-      (typeof step.content === "string" &&
-        (step.content.trim() === "." || step.content.trim() === "-"))
-    ) {
-      return null;
-    }
+    if (!step || (!step.content && !step.parts)) return null;
 
     const renderContent = () => {
       if (step.parts && Array.isArray(step.parts)) {
-        // Filter out invalid parts
         const validParts = step.parts.filter(
-          (p) =>
-            p.content &&
-            p.content.trim() !== "." &&
-            p.content.trim() !== "-" &&
-            p.content.trim() !== ""
+          (p) => p.content && p.content.trim() !== "." && p.content.trim() !== "-"
         );
         return validParts.map((part, i) =>
           part.type === "latex" || part.type === "math" ? (
@@ -274,7 +276,6 @@ export default function Practice() {
         </header>
 
         {showForm ? (
-          /* --- topic & difficulty selection UI (unchanged) --- */
           <>
             <div className="practice-form">
               <h3>Select Topic</h3>
