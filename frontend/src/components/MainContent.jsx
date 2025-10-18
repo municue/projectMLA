@@ -41,13 +41,13 @@ export default function MainContent() {
         setAnimClass("slide-out");
         setTimeout(() => {
           if (activeTab === "Tips") {
-            setCurrentIndex((prev) => (prev + 0) % tips.length);
+            setCurrentIndex((prev) => (prev + 1) % tips.length);
           } else if (activeTab === "Updates") {
-            setCurrentIndex((prev) => (prev + 0) % updates.length);
+            setCurrentIndex((prev) => (prev + 1) % updates.length);
           }
           setAnimClass("slide-in");
-        }, 300); // match slide-out duration
-      }, 2000); // 
+        }, 600); // match slide-out duration
+      }, 5000); // ⏱ 10s (change to 30000 or 60000 as needed)
       return () => clearInterval(interval);
     }
   }, [activeTab, tips, updates]);
