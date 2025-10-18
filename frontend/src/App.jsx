@@ -25,9 +25,11 @@ export default function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
+  // ✅ reloadKey ensures remount on reload
   const [reloadKey, setReloadKey] = useState(0);
 
   const handleReloadSession = () => {
+    // Instead of reloading all routes, re-render the current route only
     setReloadKey(prev => prev + 1);
   };
 
@@ -45,6 +47,7 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
+  // ✅ Hide sidebar on login/register
   const hideSidebar = location.pathname === '/loginpage' || location.pathname === '/register';
 
   const handleLogout = async () => {
@@ -62,56 +65,22 @@ export default function App() {
         />
       )}
 
-      <Routes key={reloadKey}>
-        {/* ✅ Root goes to login unless authenticated */}
+      {/* ✅ Add both reloadKey and current pathname as key */}
+      {/* This keeps you on the same page but still forces a full re-render */}
+      <Routes key={`${reloadKey}-${location.pathname}`}>
         <Route path="/" element={user ? <MainContent /> : <Navigate to="/loginpage" />} />
-
-        <Route path="/history" element={
-          <ProtectedRoute user={user}>
-            <History user={user} />
-          </ProtectedRoute>
-        } />
-        <Route path="/progress" element={
-          <ProtectedRoute user={user}>
-            <Progress />
-          </ProtectedRoute>
-        } />
-        <Route path="/topics" element={
-          <ProtectedRoute user={user}>
-            <TopicsList />
-          </ProtectedRoute>
-        } />
-        <Route path="/topics/:topicId/:subtopicId" element={
-          <ProtectedRoute user={user}>
-            <TopicContent />
-          </ProtectedRoute>
-        } />
-        <Route path="/practice" element={
-          <ProtectedRoute user={user}>
-            <Practice />
-          </ProtectedRoute>
-        } />
-
-        <Route path="/formula" element={
-          <ProtectedRoute user={user}>
-            <FormulaLayout />
-          </ProtectedRoute>
-        }>
+        <Route path="/history" element={<ProtectedRoute user={user}><History user={user} /></ProtectedRoute>} />
+        <Route path="/progress" element={<ProtectedRoute user={user}><Progress /></ProtectedRoute>} />
+        <Route path="/topics" element={<ProtectedRoute user={user}><TopicsList /></ProtectedRoute>} />
+        <Route path="/topics/:topicId/:subtopicId" element={<ProtectedRoute user={user}><TopicContent /></ProtectedRoute>} />
+        <Route path="/practice" element={<ProtectedRoute user={user}><Practice /></ProtectedRoute>} />
+        <Route path="/formula" element={<ProtectedRoute user={user}><FormulaLayout /></ProtectedRoute>}>
           <Route index element={<Formula />} />
           <Route path=":topicId/:subtopicId" element={<FormulaContent />} />
         </Route>
-
-        <Route path="/calculator" element={
-          <ProtectedRoute user={user}>
-            <Calculator />
-          </ProtectedRoute>
-        } />
-
-        {/* Public routes */}
+        <Route path="/calculator" element={<ProtectedRoute user={user}><Calculator /></ProtectedRoute>} />
         <Route path="/loginpage" element={<LoginPage onLogin={(userData) => setUser(userData)} />} />
         <Route path="/register" element={<RegisterPage />} />
-
-        {/* Fallback → always push to login if unknown route */}
         <Route path="*" element={<Navigate to="/loginpage" />} />
       </Routes>
 

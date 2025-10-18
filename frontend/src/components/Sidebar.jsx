@@ -1,9 +1,8 @@
+// src/components/Sidebar.jsx
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
-
-// ✅ Import infinity logo
-import InfinityImg from '../assets/infinityimg.png'; // or .png if you used png
+import InfinityImg from '../assets/infinityimg.png';
 
 export default function Sidebar({ user, onLogout, onReloadSession }) {
   const location = useLocation();
@@ -23,20 +22,15 @@ export default function Sidebar({ user, onLogout, onReloadSession }) {
 
   return (
     <aside className="sidebar">
-      {/* ✅ Infinity Logo */}
       <div className="logo-container">
-        <img 
-          src={InfinityImg} 
-          alt="Infinity Logo" 
-          className="logo-img" 
-        />
+        <img src={InfinityImg} alt="Infinity Logo" className="logo-img" />
       </div>
 
       <nav className="menu">
         <ul>
           {menuItems.map(item => (
-            <li 
-              key={item.label} 
+            <li
+              key={item.label}
               className={location.pathname === item.path ? 'active' : ''}
             >
               <Link to={item.path}>
@@ -54,8 +48,8 @@ export default function Sidebar({ user, onLogout, onReloadSession }) {
 
       {user && (
         <div className="sidebar-profile-container">
-          <div 
-            className="profile-avatar" 
+          <div
+            className="profile-avatar"
             onClick={() => setShowMenu(prev => !prev)}
           >
             {initials}
