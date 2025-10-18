@@ -46,8 +46,8 @@ export default function MainContent() {
             setCurrentIndex((prev) => (prev + 1) % updates.length);
           }
           setAnimClass("slide-in");
-        }, 600); // match slide-out duration
-      }, 5000); // ⏱ 10s (change to 30000 or 60000 as needed)
+        }, 150); // match slide-out duration
+      }, 2500); // ⏱ 10s (change to 30000 or 60000 as needed)
       return () => clearInterval(interval);
     }
   }, [activeTab, tips, updates]);
