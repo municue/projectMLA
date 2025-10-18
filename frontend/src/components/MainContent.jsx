@@ -47,7 +47,7 @@ export default function MainContent() {
           }
           setAnimClass("slide-in");
         }, 300); // match slide-out duration
-      }, 5000); // ⏱ 5s (change to 30000 or 60000 as needed)
+      }, 2000); // 
       return () => clearInterval(interval);
     }
   }, [activeTab, tips, updates]);
