@@ -112,6 +112,19 @@ export default function Practice() {
   const [selectedSubtopic, setSelectedSubtopic] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [elapsed, setElapsed] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0); // 👈 For sidebar reload
+
+  // ✅ Sidebar "soft reload" listener
+  useEffect(() => {
+    const handleSoftReload = () => {
+      if (!showForm) {
+        console.log("🔄 Soft reloading Practice content...");
+        setRefreshKey((prev) => prev + 1);
+      }
+    };
+    window.addEventListener("soft-reload", handleSoftReload);
+    return () => window.removeEventListener("soft-reload", handleSoftReload);
+  }, [showForm]);
 
   // ✅ Load questions
   const handleLoadQuestions = async () => {
@@ -176,6 +189,13 @@ export default function Practice() {
       setPracticeItems([]);
     }
   };
+
+  // ✅ Auto-refresh questions on soft reload (no reset)
+  useEffect(() => {
+    if (!showForm && selectedTopic && selectedSubtopic && difficulty) {
+      handleLoadQuestions();
+    }
+  }, [refreshKey]);
 
   // ✅ Update question status
   const updateStatus = async (id, status) => {
@@ -276,67 +296,65 @@ export default function Practice() {
         </header>
 
         {showForm ? (
-          <>
-            <div className="practice-form">
-              <h3>Select Topic</h3>
-              <div className="option-grid">
-                {topicsData.map((topic) => (
-                  <button
-                    key={topic.name}
-                    onClick={() => {
-                      setSelectedTopic(topic.name);
-                      setSelectedSubtopic("");
-                    }}
-                    className={selectedTopic === topic.name ? "active" : ""}
-                  >
-                    {topic.name}
-                  </button>
-                ))}
-              </div>
-
-              {selectedTopic && (
-                <>
-                  <h3>Select Subtopic</h3>
-                  <div className="option-grid">
-                    {topicsData.find((t) => t.name === selectedTopic)?.subtopics.map((sub) => (
-                      <button
-                        key={sub.name}
-                        onClick={() => setSelectedSubtopic(sub.name)}
-                        className={selectedSubtopic === sub.name ? "active" : ""}
-                      >
-                        {sub.name}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {selectedSubtopic && (
-                <>
-                  <h3>Select Difficulty</h3>
-                  <div className="option-grid">
-                    {["Easy", "Moderate", "Hard"].map((level) => (
-                      <button
-                        key={level}
-                        onClick={() => setDifficulty(level.toLowerCase())}
-                        className={difficulty === level.toLowerCase() ? "active" : ""}
-                      >
-                        {level}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              <button
-                className="load-btn"
-                disabled={!selectedTopic || !selectedSubtopic || !difficulty}
-                onClick={handleLoadQuestions}
-              >
-                Load Questions
-              </button>
+          <div className="practice-form">
+            <h3>Select Topic</h3>
+            <div className="option-grid">
+              {topicsData.map((topic) => (
+                <button
+                  key={topic.name}
+                  onClick={() => {
+                    setSelectedTopic(topic.name);
+                    setSelectedSubtopic("");
+                  }}
+                  className={selectedTopic === topic.name ? "active" : ""}
+                >
+                  {topic.name}
+                </button>
+              ))}
             </div>
-          </>
+
+            {selectedTopic && (
+              <>
+                <h3>Select Subtopic</h3>
+                <div className="option-grid">
+                  {topicsData.find((t) => t.name === selectedTopic)?.subtopics.map((sub) => (
+                    <button
+                      key={sub.name}
+                      onClick={() => setSelectedSubtopic(sub.name)}
+                      className={selectedSubtopic === sub.name ? "active" : ""}
+                    >
+                      {sub.name}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {selectedSubtopic && (
+              <>
+                <h3>Select Difficulty</h3>
+                <div className="option-grid">
+                  {["Easy", "Moderate", "Hard"].map((level) => (
+                    <button
+                      key={level}
+                      onClick={() => setDifficulty(level.toLowerCase())}
+                      className={difficulty === level.toLowerCase() ? "active" : ""}
+                    >
+                      {level}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            <button
+              className="load-btn"
+              disabled={!selectedTopic || !selectedSubtopic || !difficulty}
+              onClick={handleLoadQuestions}
+            >
+              Load Questions
+            </button>
+          </div>
         ) : (
           <div className="practice-feed">
             <div className="status-tabs">

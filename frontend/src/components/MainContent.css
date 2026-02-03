@@ -129,7 +129,7 @@
 /* === Logo Glow === */
 
 .home-logo.glow {
-  width: 600px;   /* ⬆ increased size */
+  width: 500px;   /* ⬆ increased size */
   height: auto;
   margin-top: 120px; /* ⬇ pushes it below the header */
   animation: glowPulse 3s infinite alternate;

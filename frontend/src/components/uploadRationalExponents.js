@@ -5,7 +5,7 @@ import { firebaseConfig } from "./firebase.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getFirestore(app); 
 
 const rationalExponentsData = {
   name: "Rational Exponents",

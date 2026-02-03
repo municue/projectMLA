@@ -20,7 +20,19 @@ export default function TopicContent() {
   const [content, setContent] = useState(null);
   const [expandedExamples, setExpandedExamples] = useState({});
   const [elapsed, setElapsed] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0); // 👈 for Sidebar soft reload
 
+  // ✅ Sidebar soft reload listener
+  useEffect(() => {
+    const handleSoftReload = () => {
+      console.log("🔄 Soft reloading TopicContent...");
+      setRefreshKey((prev) => prev + 1);
+    };
+    window.addEventListener("soft-reload", handleSoftReload);
+    return () => window.removeEventListener("soft-reload", handleSoftReload);
+  }, []);
+
+  // ✅ Fetch subtopic content
   useEffect(() => {
     const fetchContent = async () => {
       try {
@@ -56,15 +68,15 @@ export default function TopicContent() {
         console.error("❌ Failed to fetch subtopic content:", err);
       }
     };
+
     fetchContent();
 
     return () => {
-      if (user?.email) {
-        endSession();
-      }
+      if (user?.email) endSession();
     };
-  }, [subtopicId, topicId, user]);
+  }, [subtopicId, topicId, user, refreshKey]); // 👈 include refreshKey so it re-fetches on reload
 
+  // ✅ Timer
   useEffect(() => {
     const interval = setInterval(() => {
       setElapsed(getSessionElapsed());
@@ -108,7 +120,7 @@ export default function TopicContent() {
           <Link to="/topics" className="back-button">Back</Link>
         </header>
 
-        <div className="topic-content-body">
+        <div className="topic-content-body fade-in">
           {/* Overview */}
           {content.explanation && (
             <>
@@ -122,7 +134,7 @@ export default function TopicContent() {
                 Overview
               </h3>
               <p className="overview-text">
-                <MathJax dynamic>{content.explanation}</MathJax>
+                <MathJax dynamic key={refreshKey}>{content.explanation}</MathJax>
               </p>
             </>
           )}
@@ -151,10 +163,10 @@ export default function TopicContent() {
                   {content.formulas.map((f, idx) => (
                     <tr key={idx}>
                       <td className="formula-cell">
-                        <MathJax dynamic>{f.property}</MathJax>
+                        <MathJax dynamic key={`${refreshKey}-prop-${idx}`}>{f.property}</MathJax>
                       </td>
                       <td>
-                        <MathJax dynamic>{f.example}</MathJax>
+                        <MathJax dynamic key={`${refreshKey}-ex-${idx}`}>{f.example}</MathJax>
                       </td>
                     </tr>
                   ))}
@@ -179,13 +191,13 @@ export default function TopicContent() {
               {content.commonMistakes.map((m, idx) => (
                 <div key={idx} className="mistake-block">
                   <p>
-                    <strong>Correct:</strong> <MathJax dynamic>{m.correct}</MathJax>
+                    <strong>Correct:</strong> <MathJax dynamic key={`${refreshKey}-correct-${idx}`}>{m.correct}</MathJax>
                   </p>
                   <p>
-                    <strong>Incorrect:</strong> <MathJax dynamic>{m.incorrect}</MathJax>
+                    <strong>Incorrect:</strong> <MathJax dynamic key={`${refreshKey}-incorrect-${idx}`}>{m.incorrect}</MathJax>
                   </p>
                   <p>
-                    <MathJax dynamic>{m.explanation}</MathJax>
+                    <MathJax dynamic key={`${refreshKey}-exp-${idx}`}>{m.explanation}</MathJax>
                   </p>
                 </div>
               ))}
@@ -209,14 +221,14 @@ export default function TopicContent() {
                 {Array.isArray(content.examples) && content.examples[0]?.category
                   ? content.examples.map((cat, catIdx) => (
                       <div key={catIdx} className="example-category">
-                        <h5 style={{ color: "white", fontSize:"16px", textDecoration:"underline" }}>
+                        <h5 style={{ color: "white", fontSize: "16px", textDecoration: "underline" }}>
                           {cat.category}
                         </h5>
                         {cat.questions?.map((ex, qIdx) => (
                           <div key={qIdx} className="example-item">
                             <p>
                               <strong>Q{qIdx + 1}:</strong>{" "}
-                              <MathJax dynamic>{ex.question}</MathJax>
+                              <MathJax dynamic key={`${refreshKey}-q-${qIdx}`}>{ex.question}</MathJax>
                             </p>
                           </div>
                         ))}
@@ -231,7 +243,7 @@ export default function TopicContent() {
                             {cat.questions?.map((ex, qIdx) => (
                               <div key={qIdx} style={{ marginBottom: "15px" }}>
                                 <p><strong>Solution {qIdx + 1}:</strong></p>
-                                <MathJax dynamic>{ex.solution}</MathJax>
+                                <MathJax dynamic key={`${refreshKey}-sol-${qIdx}`}>{ex.solution}</MathJax>
                               </div>
                             ))}
                           </div>
@@ -242,7 +254,7 @@ export default function TopicContent() {
                       <div key={idx} className="example-item">
                         <p>
                           <strong>Q{idx + 1}:</strong>{" "}
-                          <MathJax dynamic>{ex.question}</MathJax>
+                          <MathJax dynamic key={`${refreshKey}-exq-${idx}`}>{ex.question}</MathJax>
                         </p>
                         <button
                           className="solution-btn"
@@ -253,7 +265,7 @@ export default function TopicContent() {
                         {expandedExamples[idx] && (
                           <div className="solution-box">
                             <p><strong>Solution {idx + 1}:</strong></p>
-                            <MathJax dynamic>{ex.solution}</MathJax>
+                            <MathJax dynamic key={`${refreshKey}-exsol-${idx}`}>{ex.solution}</MathJax>
                           </div>
                         )}
                       </div>

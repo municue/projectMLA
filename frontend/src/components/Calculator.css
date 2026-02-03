@@ -1,3 +1,9 @@
+/* =========================
+   Calculator.css (full)
+   Scrollable results inside .calc-result
+   ========================= */
+
+/* Page wrapper */
 .calc-page {
   width: 44.2%;
   margin-left: calc(23.2%);
@@ -11,6 +17,7 @@
   overflow: hidden;
 }
 
+/* Header (fixed at top) */
 .calc-header {
   position: fixed;
   top: 0;
@@ -30,36 +37,53 @@
   font-size: 1.2rem;
 }
 
+/* Body: layout container for scroll area + footer */
 .calc-body {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 70px);
-  overflow: hidden;
   position: relative;
   padding: 2px;
+  /* allow children to manage overflow */
+  min-height: 0; /* very important for flex children to scroll */
+  overflow: visible;
 }
 
+/* Scroll area (holds the result card and other content) */
 .calc-scroll {
-  flex: 1;
-  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0; /* prevents collapse in flex layouts */
+  height: auto;
+  overflow-x: hidden;
   padding: 20px;
+  /* allow native smoothing on touch devices */
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Dark custom scrollbar */
-.calc-scroll::-webkit-scrollbar {
+/* Dark custom scrollbar for any scrollable element */
+.calc-scroll::-webkit-scrollbar,
+.calc-result::-webkit-scrollbar,
+.history-scroll::-webkit-scrollbar {
   width: 8px;
 }
-.calc-scroll::-webkit-scrollbar-track {
+.calc-scroll::-webkit-scrollbar-track,
+.calc-result::-webkit-scrollbar-track,
+.history-scroll::-webkit-scrollbar-track {
   background: #000;
 }
-.calc-scroll::-webkit-scrollbar-thumb {
+.calc-scroll::-webkit-scrollbar-thumb,
+.calc-result::-webkit-scrollbar-thumb,
+.history-scroll::-webkit-scrollbar-thumb {
   background: #111;
   border-radius: 6px;
 }
-.calc-scroll::-webkit-scrollbar-thumb:hover {
+.calc-scroll::-webkit-scrollbar-thumb:hover,
+.calc-result::-webkit-scrollbar-thumb:hover,
+.history-scroll::-webkit-scrollbar-thumb:hover {
   background: #222;
 }
 
+/* Footer */
 .calc-footer {
   background: #000;
   border-top: 1px solid #333;
@@ -68,6 +92,7 @@
   box-shadow: 0 -1px 10px rgba(0,0,0,0.3);
 }
 
+/* Old display/input styles (kept) */
 .calc-display input {
   width: 95%;
   padding: 12px;
@@ -79,6 +104,7 @@
   font-size: 1.1rem;
 }
 
+/* Buttons grid (kept) */
 .calc-buttons {
   display: grid;
   grid-template-columns: repeat(4, minmax(60px, 1fr));
@@ -100,23 +126,41 @@
   background: #2a2c30;
 }
 
+/* ========== THE RESULT CARD ==========
+   Make this card the internal scroll target.
+   It will have a limited height and internal scrollbar.
+   ===================================== */
 .calc-result {
   margin-top: 20px;
   background: black;
   padding: 16px;
   border-radius: 12px;
   border: 1px solid #333;
+
+  /* NEW: internal scrolling */
+  max-height: calc(65vh - 40px); /* adjust as needed; keeps it visible under header/footer */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 12px; /* room for scrollbar so content doesn't get hidden */
+  box-sizing: border-box;
+
+  /* ensure it can shrink in flex contexts */
+  min-height: 0;
 }
 
+/* result card inner text */
 .result-text {
   font-size: 1.1rem;
   margin-bottom: 10px;
 }
 
+/* Steps list layout */
 .steps-list {
   margin-top: 1rem;
 }
 
+/* Each step block */
 .step-block {
   margin-bottom: 15px;
   padding: 10px;
@@ -130,7 +174,7 @@
   font-size: 1.05rem;
 }
 
-/* Detailed Explanation (Ordered List) */
+/* Explanation ordered list */
 .explanation-box ol {
   padding-left: 1.5rem;
   margin-top: 0.5rem;
@@ -146,6 +190,7 @@
   font-weight: bold;
 }
 
+/* Question & Answer boxes inside result card */
 .question-box, .answer-box {
   background: black;
   padding: 14px;
@@ -159,7 +204,7 @@
   margin-top: 20px;
 }
 
-/* Keyboard */
+/* Keyboard wrapper */
 .keyboard-wrapper {
   border: 1px solid #333;
   border-radius: 12px;
@@ -209,7 +254,6 @@
   grid-column: span 3;
 }
 
-/* Toggle key style for ABC/123 */
 .key-btn.switch-btn {
   background-color: #1a1c20;
   border: 1px solid #333;
@@ -223,6 +267,7 @@
   border: 1px solid cyan;
 }
 
+/* Display row (input + toggle) */
 .display-row {
   display: flex;
   align-items: center;
@@ -240,7 +285,7 @@
   font-size: 1.1rem;
 }
 
-
+/* Toggle button */
 .toggle-btn {
   background-color: #1a1c20;
   border: 1px solid #333;
@@ -312,6 +357,7 @@
   border: 1px solid red;
 }
 
+/* Calc menu dropdown */
 .calc-menu {
   position: absolute;
   right: 20px;
@@ -360,6 +406,7 @@
   border: 1px solid cyan;
 }
 
+/* Toast notifications */
 .toast {
   position: fixed;
   top: 80px;
@@ -397,7 +444,7 @@
   color: limegreen;
 }
 
-/* Past calculations modal scroll */
+/* History modal scroll area */
 .history-scroll {
   max-height: 300px;
   overflow-y: auto;
@@ -435,6 +482,7 @@
   pointer-events: none;
 }
 
+/* Inline expression display (fake caret) */
 .expression-display {
   flex: 1;
   padding: 12px;
@@ -461,7 +509,6 @@
     opacity: 0;
   }
 }
-
 
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translate(-50%, 20px); }
@@ -507,10 +554,10 @@
 .step-box,
 .question-box,
 .answer-box {
-  line-height: 1.6;    /* add vertical spacing */
-  letter-spacing: 0.5px; /* spacing between letters */
-  word-spacing: 4px;   /* spacing between words */
-  white-space: normal; /* allow wrapping */
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+  word-spacing: 4px;
+  white-space: normal;
 }
 
 /* Prevent horizontal scrolling site-wide */
@@ -540,7 +587,6 @@ body, html, .calc-page {
   font-size: 1.1rem;
 }
 
-
 .explanation-text {
   font-size: 1rem;
   line-height: 1.6;
@@ -555,12 +601,23 @@ body, html, .calc-page {
 .step-block-inner {
   display: flex;
   flex-direction: column;
-  gap: 6px;   /* space between explanation and equation */
+  gap: 6px;
 }
 
 .steps-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;  /* space between steps */
+  gap: 18px;
 }
 
+/* Small-screen adjustments (if any) */
+@media (max-width: 900px) {
+  .calc-page { width: 100%; margin-left: 0; padding-top: 70px; }
+  .calc-header { width: 100%; left: 0; }
+  .calc-result { max-height: calc(60vh - 30px); }
+}
+
+/* Final safety: ensure .calc-result receives pointer events even if parent had weird rules */
+.calc-result, .calc-result * {
+  pointer-events: auto;
+}

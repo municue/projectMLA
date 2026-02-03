@@ -1,4 +1,3 @@
-// src/components/Progress.jsx
 import { useEffect, useState } from "react";
 import {
   LineChart,
@@ -25,6 +24,17 @@ export default function Progress() {
   const [practiceData, setPracticeData] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
   const [filter, setFilter] = useState("this-week");
+  const [refreshKey, setRefreshKey] = useState(0); // 👈 for soft reload
+
+  // ✅ Listen for Sidebar soft reload event
+  useEffect(() => {
+    const handleSoftReload = () => {
+      setRefreshKey((prev) => prev + 1);
+      console.log("🔄 Soft reloaded Progress page — data re-fetched without resetting filters.");
+    };
+    window.addEventListener("soft-reload", handleSoftReload);
+    return () => window.removeEventListener("soft-reload", handleSoftReload);
+  }, []);
 
   // ✅ Topic Study Trends
   useEffect(() => {
@@ -54,9 +64,7 @@ export default function Progress() {
             topicSubtopic: `${topic}: ${subtopic}`,
             seconds: data.seconds ?? 0,
             day: timestamp
-              ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][
-                  timestamp.getDay()
-                ]
+              ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][timestamp.getDay()]
               : "",
             timestamp,
           });
@@ -65,15 +73,12 @@ export default function Progress() {
 
       chartRows.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 
-      // ✅ Fix filter logic
-      const filteredRows =
-        filter === "all" ? chartRows : applyFilter(chartRows, filter);
-
+      const filteredRows = filter === "all" ? chartRows : applyFilter(chartRows, filter);
       setChartData(filteredRows.slice(-20));
     });
 
     return () => unsubscribe();
-  }, [user, filter]);
+  }, [user, filter, refreshKey]);
 
   // ✅ Practice Stats
   useEffect(() => {
@@ -87,9 +92,7 @@ export default function Progress() {
         const data = docSnap.data();
         if (!docSnap.id.includes("-summary")) return;
 
-        const timestamp = data.timestamp?.toDate
-          ? data.timestamp.toDate()
-          : null;
+        const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : null;
 
         rows.push({
           id: i,
@@ -103,23 +106,18 @@ export default function Progress() {
       });
 
       rows.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-
-      const filteredRows =
-        filter === "all" ? rows : applyFilter(rows, filter);
-
+      const filteredRows = filter === "all" ? rows : applyFilter(rows, filter);
       setPracticeData(filteredRows.slice(-20));
     });
 
     return () => unsubscribe();
-  }, [user, filter]);
+  }, [user, filter, refreshKey]);
 
   // ✅ Shared filter logic
   const applyFilter = (rows, filterType) => {
     const now = new Date();
     if (filterType === "this-week") {
-      return rows.filter(
-        (r) => r.timestamp && now - r.timestamp <= 7 * 24 * 60 * 60 * 1000
-      );
+      return rows.filter((r) => r.timestamp && now - r.timestamp <= 7 * 24 * 60 * 60 * 1000);
     } else if (filterType === "last-week") {
       return rows.filter(
         (r) =>
@@ -128,9 +126,7 @@ export default function Progress() {
           now - r.timestamp <= 14 * 24 * 60 * 60 * 1000
       );
     } else if (filterType === "last-2-days") {
-      return rows.filter(
-        (r) => r.timestamp && now - r.timestamp <= 2 * 24 * 60 * 60 * 1000
-      );
+      return rows.filter((r) => r.timestamp && now - r.timestamp <= 2 * 24 * 60 * 60 * 1000);
     } else {
       return rows;
     }
@@ -171,6 +167,7 @@ export default function Progress() {
 
   return (
     <div className="progress-container">
+      {/* ✅ Header preserved EXACTLY as before */}
       <div className="progress-header">
         <h2>Progress</h2>
         <div className="progress-menu">
@@ -209,12 +206,12 @@ export default function Progress() {
         </div>
       </div>
 
+      {/* ✅ Charts */}
       <div className="progress-content">
-        {/* ✅ Topic Study Trends */}
         <div className="full-chart scroll-scale">
           <h3 className="chart-title">Topic Study Trends</h3>
-          <ResponsiveContainer width="100%" height={340}>
-            <LineChart data={chartData} margin={{top:10, right: 20, bottom: 50 }}>
+          <ResponsiveContainer key={refreshKey + "-chart1"} width="100%" height={340}>
+            <LineChart data={chartData} margin={{ top: 10, right: 20, bottom: 50 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="id" stroke="#ccc" tick={false}>
                 <Label value="Topic (Subtopic)" offset={30} position="bottom" />
@@ -233,15 +230,14 @@ export default function Progress() {
           </ResponsiveContainer>
         </div>
 
-        {/* ✅ Practice Stats by Difficulty */}
         <div className="full-chart scroll-scale practice-stats-chart">
           <h3 className="chart-title">Practice Stats</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={practiceData} margin={{ top:10, right: 10, bottom: 50 }}>
+          <ResponsiveContainer key={refreshKey + "-chart2"} width="100%" height={300}>
+            <AreaChart data={practiceData} margin={{ top: 10, right: 10, bottom: 50 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis stroke="#ccc" tick={false} />
               <YAxis stroke="#ccc" />
-              <Tooltip 
+              <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
                     const item = payload[0].payload;
@@ -251,14 +247,12 @@ export default function Progress() {
                           <strong>{item.topic}: {item.subtopic}</strong>
                         </p>
                         <p>🎯 Difficulty: {item.difficulty}</p>
-                        <p style={{color: "green"}}>✅ Done: {item.doneCount}</p>
+                        <p style={{ color: "green" }}>✅ Done: {item.doneCount}</p>
                         <p>📌 Total: {item.totalCount}</p>
                         <p>
                           📊 Completion:{" "}
                           {item.totalCount > 0
-                            ? `${Math.round(
-                                (item.doneCount / item.totalCount) * 100
-                              )}%`
+                            ? `${Math.round((item.doneCount / item.totalCount) * 100)}%`
                             : "0%"}
                         </p>
                       </div>

@@ -48,7 +48,8 @@
   background: black;
   border: 1px solid white;
   border-radius: 6px;
-  margin-left: 100px;
+  margin-left: 50px !important;   /* cancel the 100px */
+  transform: translateX(-20px);
   color: white;
   font-size: 1rem;
   cursor: pointer;
@@ -67,3 +68,64 @@ a {
 a:hover{
   color: aqua;
 }
+
+/* ---------- Register Method Row ---------- */
+
+.method-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.method-btn {
+  width: auto !important;
+  padding: 8px 14px !important;
+  margin: 0 !important;
+  font-size: 0.85rem;
+}
+
+.or-text {
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+/* ---------- Links ---------- */
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: aqua;
+}
+
+/* ---------- Back ---------- */
+
+.back-row {
+  margin-bottom: 10px;
+}
+
+.back-link {
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+/* ---------- Switch Text ---------- */
+
+.switch-text {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+
