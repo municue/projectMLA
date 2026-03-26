@@ -1,0 +1,164 @@
+.theme-panel {
+  width: 44.2%;
+  margin-left: calc(23.2%);
+  height: 100vh;
+  background: var(--background-color);
+  color: var(--text-color);
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding-top: 70px;
+  scrollbar-width: none;
+}
+
+.theme-panel::-webkit-scrollbar { width: 0; }
+
+.theme-header {
+  position: fixed;
+  width: 40.7%;
+  top: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--background-color);
+  z-index: 5;
+}
+
+.theme-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.theme-body {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.theme-section h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: var(--primary-color);
+}
+
+.theme-hint {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 16px;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 12px;
+}
+
+.mode-btn {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.mode-btn.active {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.mode-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.color-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.color-swatch:hover { transform: scale(1.15); }
+
+.color-swatch.selected {
+  border-color: var(--text-color);
+  transform: scale(1.15);
+}
+
+.check {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+}
+
+.theme-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.preview-keyboard {
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-weight: bold;
+}
+
+.preview-keys {
+  display: flex;
+  gap: 8px;
+}
+
+.preview-key {
+  width: 40px;
+  height: 40px;
+  border: 1px solid;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  background: rgba(0,0,0,0.3);
+}
+
+.preview-card {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--card-bg);
+}
+
+.preview-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: fit-content;
+  transition: all 0.2s ease;
+}
+
+.preview-btn:hover { opacity: 0.8; }

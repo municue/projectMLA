@@ -1,11 +1,10 @@
 /* ---------- Register button only ---------- */
 .register-btn {
- margin-left: 50px !important;   /* cancel the 100px */
+  margin-left: 50px !important;
   transform: translateX(-20px);
 }
 
 .register-btn:hover {
-  background: black;
-  color: cyan;
-  border: 1px solid cyan;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
 }

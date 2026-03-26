@@ -16,13 +16,12 @@ export default function Sidebar({ user, onLogout }) {
     { label: "Practice", icon: "📝", path: "/practice" },
     { label: "Progress", icon: "📈", path: "/progress" },
     { label: "History", icon: "📜", path: "/history" },
+    { label: "Theme", icon: "🎨", path: "/theme" },
   ];
 
   const initials = user ? user.email.charAt(0).toUpperCase() : '';
 
-  // ✅ New soft refresh handler
   const handleSoftReload = () => {
-    // Dispatch an event that components can listen to
     const event = new CustomEvent('soft-reload', {
       detail: { timestamp: Date.now(), path: location.pathname }
     });
@@ -51,7 +50,6 @@ export default function Sidebar({ user, onLogout }) {
         </ul>
       </nav>
 
-      {/* ✅ Updated button — triggers soft reload */}
       <button className="action-button" onClick={handleSoftReload}>
         Reload Session
       </button>

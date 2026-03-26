@@ -2,18 +2,17 @@
   width: 44.2%;
   margin-left: calc(23.2%);
   height: 100vh;
-  background: #000;
-  color: #fff;
+  background: var(--background-color);
+  color: var(--text-color);
   box-sizing: border-box;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: black black;
+  scrollbar-width: none;
   overflow-y: auto;
   padding-top: 70px;
 }
 
+.topic-content-page::-webkit-scrollbar { width: 0; }
 
-/* Header */
 .topic-content-header {
   position: fixed;
   width: 40.7%;
@@ -23,8 +22,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  border-bottom: 1px solid #333;
-  background-color: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--background-color);
   backdrop-filter: blur(10px);
   z-index: 5;
 }
@@ -35,12 +34,11 @@
   font-weight: bold;
 }
 
-/* Back button */
 .back-button {
   padding: 6px 12px;
-  border: 1px solid white;
+  border: 1px solid var(--text-color);
   border-radius: 6px;
-  color: white;
+  color: var(--text-color);
   background: transparent;
   font-size: 0.9rem;
   cursor: pointer;
@@ -49,20 +47,18 @@
 }
 
 .back-button:hover {
-  background: black;
-  border: 1px solid cyan;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .session-timer {
   font-size: 0.9rem;
-  color:cyan;
+  color: var(--primary-color);
   font-weight: bold;
   white-space: nowrap;
   padding-bottom: 40px;
 }
 
-
-/* Body */
 .topic-content-body {
   padding: 20px;
   padding-top: 0%;
@@ -75,31 +71,17 @@
   font-weight: bold;
   font-size: 1.2rem;
   text-decoration: underline;
-  text-decoration-color: white;
-  text-decoration-thickness: 3px; /* Thicker underline */
+  text-decoration-color: var(--text-color);
+  text-decoration-thickness: 3px;
   padding-bottom: 10px;
 }
 
-
-/* Section titles */
-.section-title {
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-decoration-color: white;
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-
-/* Overview text */
 .overview-text {
   text-align: left;
   font-size: 18px;
-  color: white;
+  color: var(--text-color);
 }
 
-/* Table */
 .formula-table {
   width: 100%;
   border-collapse: collapse;
@@ -108,30 +90,23 @@
 
 .formula-table th,
 .formula-table td {
-  border: 0.5px solid #333;
-  border-radius: 3px;
+  border: 0.5px solid var(--border-color);
   padding: 8px;
   text-align: left;
 }
 
 .formula-table th {
-  background-color: black;
+  background-color: var(--background-color);
 }
 
 .formula-text {
   font-family: monospace;
-  color: cyan;
+  color: var(--primary-color);
   font-size: 1rem;
 }
 
-.property-example {
-  font-size: 1rem;
-  color: #bbb;
-}
-
-/* Mistakes */
 .mistake-block {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255,255,255,0.05);
   border-left: 4px solid red;
   border-radius: 4px;
   padding: 10px;
@@ -139,29 +114,18 @@
   font-size: 17px;
 }
 
-.correct-text {
-  color: lightgreen;
-  font-family: monospace;
-}
-
-.incorrect-text {
-  color: red;
-  font-family: monospace;
-}
-
-/* Examples */
 .example-card {
-  border: 1px solid #333;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
   padding: 15px;
   margin-bottom: 20px;
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(255,255,255,0.02);
 }
 
 .solution-btn {
   background: transparent;
-  border: 1px solid white;
-  color: white;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
@@ -169,21 +133,19 @@
 }
 
 .solution-btn:hover {
-  border: 1px solid cyan;
-  background: black;
-  color: cyan;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .solution-box {
-  background: black;
+  background: var(--background-color);
   padding: 10px;
   margin-top: 8px;
   border-radius: 3px;
-  border-left: 3px solid cyan;
+  border-left: 3px solid var(--primary-color);
   white-space: pre-wrap;
 }
 
-/* Fade-in animation */
 .fade-in {
   opacity: 0;
   transform: translateY(10px);
@@ -191,8 +153,5 @@
 }
 
 @keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -156,7 +156,7 @@ export default function Progress() {
               <strong>Date:</strong> {item.timestamp.toLocaleDateString()}
             </p>
           )}
-          <p className="tooltip-time" style={{ color: "#00bfff" }}>
+          <p className="tooltip-time" style={{ color: "var(--primary-color)" }}>
             ⏱ Time Spent: {formatTime(item.seconds)}
           </p>
         </div>
@@ -221,7 +221,7 @@ export default function Progress() {
               <Line
                 type="monotone"
                 dataKey="seconds"
-                stroke="#00bfff"
+                stroke="var(--primary-color)"
                 strokeWidth={2}
                 dot={{ r: 3 }}
                 name="Time Spent"

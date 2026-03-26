@@ -69,10 +69,10 @@ export default function CalculatorPage() {
     return obj;
   };
 
-  // ✅ Save to Firestore
+  //  Save to Firestore
   const saveCalculation = async () => {
     if (!user?.email || !expression?.trim() || steps.length === 0) {
-      showToast("⚠️ Nothing to save", "error");
+      showToast(" Nothing to save", "error");
       return;
     }
     try {
@@ -86,14 +86,14 @@ export default function CalculatorPage() {
 
       await addDoc(collection(db, "calculations"), payload);
 
-      showToast("✅ Calculation saved", "success");
+      showToast(" Calculation saved", "success");
     } catch (err) {
       console.error("Save error:", err);
       showToast("❌ Failed to save", "error");
     }
   };
 
-  // ✅ Subscribe to past calculations
+  //  Subscribe to past calculations
   useEffect(() => {
     if (!user?.email) return;
 
@@ -126,14 +126,14 @@ export default function CalculatorPage() {
       },
       (error) => {
         console.error("Snapshot error:", error);
-        showToast("❌ Failed to load history", "error");
+        showToast(" Failed to load history", "error");
       }
     );
 
     return () => unsubscribe();
   }, [user]);
 
-  // ✅ Delete calculation
+  //  Delete calculation
   const deleteCalculation = async () => {
     if (!deleteTarget) return;
     try {
@@ -146,7 +146,7 @@ export default function CalculatorPage() {
     }
   };
 
-  // ✅ Insert character at cursor position
+  //  Insert character at cursor position
   const insertAtCursor = (val) => {
     setExpression((expr) => {
       const newExpr = expr.slice(0, cursorPos) + val + expr.slice(cursorPos);
@@ -155,7 +155,7 @@ export default function CalculatorPage() {
     });
   };
 
-  // ✅ Handle button clicks
+  //  Handle button clicks
   const handleClick = (val) => {
     if ((val === "ABC" || val === "123") && activeCategory === "basic") {
       setShowAlphabet((prev) => !prev);
@@ -332,10 +332,12 @@ export default function CalculatorPage() {
           <div className="calc-footer">
             <div className="display-row">
               <div
-                className="expression-display"
+                className={`expression-display ${document.activeElement === inputRef.current ? 'active' : ''}`}
                 tabIndex={0}
                 onKeyDown={handleKeyDown}
                 ref={inputRef}
+                onFocus={() => inputRef.current.classList.add('active')}
+                onBlur={() => inputRef.current.classList.remove('active')}
               >
                 {expression.slice(0, cursorPos)}
                 <span className="fake-caret" />

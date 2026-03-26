@@ -1,20 +1,19 @@
-/* src/components/Progress.css */
-
 .progress-container {
   width: 44.2%;
   margin-left: calc(23.2%);
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--background-color);
+  color: var(--text-color);
   padding-top: 10px;
   padding-bottom: 10px;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: black black;
+  scrollbar-width: none;
 }
+
+.progress-container::-webkit-scrollbar { width: 0; }
 
 .progress-header {
   position: fixed;
@@ -25,8 +24,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  border-bottom: 1px solid #333;
-  background-color: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--background-color);
   backdrop-filter: blur(10px);
   z-index: 5;
 }
@@ -34,7 +33,7 @@
 .progress-header h2 {
   font-size: 1.2rem;
   margin: 0;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .progress-content {
@@ -43,23 +42,27 @@
   padding-top: 70px;
   padding-left: 20px;
   padding-right: 20px;
+  scrollbar-width: none;
 }
+
+.progress-content::-webkit-scrollbar { width: 0; }
 
 .chart-title {
   text-align: center;
   font-size: 1.2rem;
   margin-bottom: 15px;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .full-chart {
-  margin-bottom: 40px;
+  margin-bottom: 60px;
   padding: 20px;
-  background: black;
-  border-radius: 12px;
-  border: 1px solid #333;
   padding-right: 55px;
   padding-left: 3px;
+  background: var(--background-color);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  outline: none !important;
 }
 
 .mastered-topics {
@@ -67,29 +70,29 @@
   flex-direction: column;
   gap: 16px;
   padding: 20px;
-  background: black;
+  background: var(--background-color);
   border-radius: 12px;
-  border: 1px solid #333;
+  border: 1px solid var(--border-color);
 }
 
 .mastered-topics h3 {
   text-align: center;
   font-size: 1.2rem;
   margin-bottom: 10px;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .topic-bar .topic-label {
   display: flex;
   justify-content: space-between;
-  color: #ccc;
+  color: var(--text-color);
   margin-bottom: 4px;
   font-size: 0.95rem;
 }
 
 .topic-progress {
   width: 100%;
-  background: #222;
+  background: var(--card-bg);
   height: 10px;
   border-radius: 20px;
   overflow: hidden;
@@ -97,46 +100,39 @@
 
 .topic-fill {
   height: 100%;
-  background-color: #00FFFF;
+  background-color: var(--primary-color);
   border-radius: 20px;
 }
 
-.recharts-tooltip-wrapper {
-  background: none !important;
-  border: none !important;
-}
-
 .custom-tooltip {
-  background-color: black;
-  border: 1px solid #00FFFF;
+  background-color: var(--background-color);
+  border: 1px solid var(--primary-color);
   border-radius: 8px;
   padding: 6px 10px;
-  color: #777;
+  color: var(--text-color);
   font-size: 0.8rem;
 }
 
 .custom-tooltip .tooltip-time {
-  color: #66b3fa;
+  color: var(--primary-color);
   font-weight: bold;
 }
 
-.progress-menu {
-  position: relative;
-}
-
 .practice-tooltip {
-  background-color: black;
-  border: 1px solid #da920d;
+  background-color: var(--background-color);
+  border: 1px solid var(--primary-color);
   border-radius: 8px;
   padding: 6px 10px;
-  color: #777;
+  color: var(--text-color);
   font-size: 0.8rem;
 }
+
+.progress-menu { position: relative; }
 
 .menu-icon {
   font-size: 1.2rem;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 .progress-dropdown {
@@ -144,8 +140,8 @@
   right: 0;
   top: 30px;
   width: 200px;
-  background: black;
-  border: 1px solid #333;
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 8px;
   z-index: 10;
@@ -156,24 +152,23 @@
 
 .progress-dropdown button {
   width: 100%;
-  background: black;
-  color: white;
+  background: var(--background-color);
+  color: var(--text-color);
   border: 1px solid #777;
   border-radius: 6px;
   padding: 8px 12px;
   text-align: left;
   cursor: pointer;
   font-size: 0.95rem;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.progress-dropdown button:hover {
-  background: black;
-  color: cyan;
-  border: 1px solid cyan;
+.progress-dropdown button:hover,
+.progress-dropdown button.active {
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
-.full-chart,
 .recharts-wrapper,
 .recharts-surface {
   outline: none !important;
@@ -181,16 +176,5 @@
 
 .recharts-x-axis .recharts-cartesian-axis-tick text {
   font-size: 0.8rem;
-  fill: #ccc;
-  white-space: pre-line;
-}
-
-.full-chart {
-  margin-bottom: 60px;
-}
-
-.progress-dropdown button.active {
-  background: black;
-  color: cyan;
-  border: 1px solid cyan;
+  fill: var(--text-color);
 }

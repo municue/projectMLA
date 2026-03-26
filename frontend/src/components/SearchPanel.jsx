@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef} from 'react';
-import {collection, getDocs} from 'firebase/firestore';
+import {collection, getDocs, doc, getDoc} from 'firebase/firestore';
 import {db} from './firebase';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import './SearchPanel.css';
 
 const CACHE_KEY = 'mathTopicsCache';
@@ -14,18 +14,23 @@ const FALLBACK_TRENDING = [
 ];
 
 const FALLBACK_RECOMMENDED = [
-  'Integer Exponents', 'Rational Exponents',
-  'Polynomials', 'Factoring Polynomials',
-  'Linear Equations', 'Quadratic Equations',
-  'Graphing Functions', 'Complex Numbers',
+  {name: 'Integer Exponents', parentId: 'preliminaries'},
+  {name: 'Rational Exponents', parentId: 'preliminaries'},
+  {name: 'Polynomials', parentId: 'preliminaries'},
+  {name: 'Factoring Polynomials', parentId: 'preliminaries'},
+  {name: 'Linear Equations', parentId: 'solving-equations-and-inequalities'},
+  {name: 'Graphing Functions', parentId: 'graphing-and-functions'},
 ];
 
 const formatId = (name) => name.toLowerCase().replace(/\s+/g, '-');
 
 export default function SearchPanel() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [trendingTopics, setTrendingTopics] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
+  const [recommendedTitle, setRecommendedTitle] = useState('Recommended');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [allTopics, setAllTopics] = useState([]);
@@ -33,24 +38,34 @@ export default function SearchPanel() {
   const [searching, setSearching] = useState(false);
 
   const trendingRef = useRef(null);
-  const recommendedRef = useRef(null);
 
+  // Load topics and trending on mount
   useEffect(() => {
     loadLocalTopics();
     loadTrendingFromCache();
   }, []);
+
+  // Watch URL changes to update recommended
+  useEffect(() => {
+    if (allTopics.length === 0) return;
+
+    const parts = location.pathname.split('/');
+    // URL pattern: /topics/:topicId/:subtopicId
+    const topicId = parts[1] === 'topics' ? parts[2] : null;
+
+    if (topicId) {
+      loadRecommendedForTopic(topicId);
+    } else {
+      setRecommendedTitle('Recommended');
+      setRecommendations(FALLBACK_RECOMMENDED);
+    }
+  }, [location.pathname, allTopics]);
 
   useEffect(() => {
     if (!loading && trendingTopics.length > 0) {
       startScroll(trendingRef);
     }
   }, [loading, trendingTopics]);
-
-  useEffect(() => {
-    if (!loading && recommendations.length > 0) {
-      startScroll(recommendedRef);
-    }
-  }, [loading, recommendations]);
 
   function startScroll(ref) {
     const el = ref.current;
@@ -103,6 +118,29 @@ export default function SearchPanel() {
     }
   }
 
+  async function loadRecommendedForTopic(topicId) {
+    try {
+      const topicDocRef = doc(db, 'topics', topicId);
+      const topicDocSnap = await getDoc(topicDocRef);
+
+      if (topicDocSnap.exists()) {
+        const topicData = topicDocSnap.data();
+        const subtopics = (topicData.subtopics || [])
+          .sort((a, b) => a.order - b.order)
+          .map((sub) => ({
+            name: sub.name,
+            parentId: topicId,
+          }));
+
+        setRecommendedTitle(`Recommended for ${topicData.name}`);
+        setRecommendations(subtopics);
+      }
+    } catch (error) {
+      console.error('Error loading recommended topics:', error);
+      setRecommendations(FALLBACK_RECOMMENDED);
+    }
+  }
+
   async function loadTrendingFromCache() {
     const cached = localStorage.getItem(CACHE_KEY);
 
@@ -112,7 +150,6 @@ export default function SearchPanel() {
 
       if (!isExpired) {
         setTrendingTopics(data.trending || FALLBACK_TRENDING);
-        setRecommendations(data.recommended || FALLBACK_RECOMMENDED);
         setLoading(false);
         return;
       }
@@ -134,11 +171,10 @@ export default function SearchPanel() {
           messages: [
             {
               role: 'user',
-              content: 'Return a JSON object with two arrays. ' +
+              content: 'Return a JSON object with one array. ' +
                 "1) 'trending': 6 trending math topics as short hashtag strings. " +
-                "2) 'recommended': 6 beginner math topics to learn first. " +
                 'Return ONLY the JSON, no explanation. ' +
-                'Example: {"trending":["LinearAlgebra"],"recommended":["Calculus"]}',
+                'Example: {"trending":["LinearAlgebra","Calculus"]}',
             },
           ],
         }),
@@ -153,11 +189,9 @@ export default function SearchPanel() {
       }));
 
       setTrendingTopics(result.trending || FALLBACK_TRENDING);
-      setRecommendations(result.recommended || FALLBACK_RECOMMENDED);
     } catch (error) {
       console.error('Error fetching from OpenAI:', error);
       setTrendingTopics(FALLBACK_TRENDING);
-      setRecommendations(FALLBACK_RECOMMENDED);
     } finally {
       setLoading(false);
     }
@@ -212,11 +246,7 @@ export default function SearchPanel() {
   }
 
   function handleRecommendedClick(item) {
-    const lower = item.toLowerCase();
-    const match = allTopics.find((t) =>
-      t.name.toLowerCase().includes(lower),
-    );
-    if (match) handleTopicClick(match);
+    navigate(`/topics/${item.parentId}/${formatId(item.name)}`);
   }
 
   return (
@@ -285,23 +315,14 @@ export default function SearchPanel() {
           </div>
 
           <div className="panel-box">
-            <h2 className="section-title">Recommended</h2>
-            {loading ? (
-              <p style={{color: '#aaa'}}>Loading...</p>
-            ) : (
-              <div
-                ref={recommendedRef}
-                style={{maxHeight: '180px', overflow: 'hidden'}}
-              >
-                <ul>
-                  {[...recommendations, ...recommendations].map((item, index) => (
-                    <li key={index} onClick={() => handleRecommendedClick(item)}>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <h2 className="section-title">{recommendedTitle}</h2>
+            <ul>
+              {recommendations.map((item, index) => (
+                <li key={index} onClick={() => handleRecommendedClick(item)}>
+                  📄 {item.name}
+                </li>
+              ))}
+            </ul>
           </div>
         </>
       )}

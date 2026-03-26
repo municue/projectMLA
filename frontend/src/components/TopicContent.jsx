@@ -152,15 +152,15 @@ export default function TopicContent() {
             {showMenu && (
               <div className="history-dropdown">
                 <button onClick={() => { navigate(-1); setShowMenu(false); }}>
-                  ← Back
+                  Back
                 </button>
                 {nextSubtopic && (
                   <button onClick={handleNext}>
-                    → Next: {nextSubtopic.name}
+                    Next: {nextSubtopic.name}
                   </button>
                 )}
                 <button onClick={() => { navigate("/topics"); setShowMenu(false); }}>
-                  📚 Back to Topics List
+                  Back to Topics List
                 </button>
               </div>
             )}
