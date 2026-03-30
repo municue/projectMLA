@@ -1,11 +1,10 @@
-// src/components/FormulaContent.jsx
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
-import { useAuth } from "../context/AuthContext";   // 👈 get logged-in user
-import { logHistory } from "../utils/logHistory";   // 👈 helper to log history
+import { useAuth } from "../context/AuthContext";
+import { logHistory } from "../utils/logHistory";
 import "./FormulaContent.css";
 
 const mathJaxConfig = {
@@ -16,10 +15,20 @@ const mathJaxConfig = {
 const normalize = (text) => text.toLowerCase().replace(/\s+/g, "-");
 
 export default function FormulaContent() {
-  const { subtopicId, topicId } = useParams();   // 👈 include topicId too
+  const { subtopicId, topicId } = useParams();
   const { user } = useAuth();
   const [formulas, setFormulas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // ✅ Listen for soft-reload
+  useEffect(() => {
+    const handleSoftReload = () => {
+      setRefreshKey((prev) => prev + 1);
+    };
+    window.addEventListener("soft-reload", handleSoftReload);
+    return () => window.removeEventListener("soft-reload", handleSoftReload);
+  }, []);
 
   useEffect(() => {
     const fetchFormulas = async () => {
@@ -35,14 +44,13 @@ export default function FormulaContent() {
 
         setLoading(false);
 
-        // ✅ Log history (only if user is logged in)
         if (user?.email) {
           logHistory({
             userEmail: user.email,
             type: "open-formula",
             topic: topicId,
             subtopic: subtopicId,
-            source: "formula",   // 👈 added to distinguish formulas
+            source: "formula",
           });
         }
       } catch (err) {
@@ -66,7 +74,8 @@ export default function FormulaContent() {
               No formulas available
             </p>
           ) : (
-            <div className="formula-content-card fade-in">
+            // 👇 key={refreshKey} forces full remount
+            <div key={refreshKey} className="formula-content-card fade-in">
               <ul className="formula-list">
                 {formulas.map((f, idx) => (
                   <li key={idx} className="formula-item">

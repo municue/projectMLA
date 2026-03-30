@@ -24,19 +24,33 @@ export default function Progress() {
   const [practiceData, setPracticeData] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
   const [filter, setFilter] = useState("this-week");
-  const [refreshKey, setRefreshKey] = useState(0); // 👈 for soft reload
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [primaryColor, setPrimaryColor] = useState(
+    getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim() || '#00d4ff'
+  );
 
-  // ✅ Listen for Sidebar soft reload event
   useEffect(() => {
     const handleSoftReload = () => {
       setRefreshKey((prev) => prev + 1);
-      console.log("🔄 Soft reloaded Progress page — data re-fetched without resetting filters.");
     };
     window.addEventListener("soft-reload", handleSoftReload);
     return () => window.removeEventListener("soft-reload", handleSoftReload);
   }, []);
 
-  // ✅ Topic Study Trends
+  // Watch for theme color changes
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const color = getComputedStyle(document.documentElement)
+        .getPropertyValue('--primary-color').trim();
+      if (color) setPrimaryColor(color);
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['style'],
+    });
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!user?.email) return;
 
@@ -72,7 +86,6 @@ export default function Progress() {
       });
 
       chartRows.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-
       const filteredRows = filter === "all" ? chartRows : applyFilter(chartRows, filter);
       setChartData(filteredRows.slice(-20));
     });
@@ -80,7 +93,6 @@ export default function Progress() {
     return () => unsubscribe();
   }, [user, filter, refreshKey]);
 
-  // ✅ Practice Stats
   useEffect(() => {
     if (!user?.email) return;
 
@@ -113,7 +125,6 @@ export default function Progress() {
     return () => unsubscribe();
   }, [user, filter, refreshKey]);
 
-  // ✅ Shared filter logic
   const applyFilter = (rows, filterType) => {
     const now = new Date();
     if (filterType === "this-week") {
@@ -132,32 +143,59 @@ export default function Progress() {
     }
   };
 
-  // ✅ Format time properly
   const formatTime = (secs) => {
     const m = Math.floor(secs / 60);
     const s = secs % 60;
     return `${m}m ${s}s`;
   };
 
-  // ✅ Tooltip for topics
   const TopicTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const item = payload[0].payload;
       return (
         <div className="custom-tooltip">
-          <p className="tooltip-title">
-            <strong>{item.topicSubtopic}</strong>
+          <p style={{ color: primaryColor, fontWeight: 'bold' }}>
+            {item.topicSubtopic}
           </p>
-          <p>
+          <p style={{ color: 'var(--text-color)' }}>
             <strong>Day:</strong> {item.day || "N/A"}
           </p>
           {item.timestamp && (
-            <p>
+            <p style={{ color: 'var(--text-color)' }}>
               <strong>Date:</strong> {item.timestamp.toLocaleDateString()}
             </p>
           )}
-          <p className="tooltip-time" style={{ color: "var(--primary-color)" }}>
+          <p style={{ color: primaryColor }}>
             ⏱ Time Spent: {formatTime(item.seconds)}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const PracticeTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const item = payload[0].payload;
+      return (
+        <div className="practice-tooltip">
+          <p style={{ color: primaryColor, fontWeight: 'bold' }}>
+            {item.topic}: {item.subtopic}
+          </p>
+          <p style={{ color: 'var(--text-color)' }}>
+            🎯 Difficulty: {item.difficulty}
+          </p>
+          <p style={{ color: 'limegreen' }}>
+            ✅ Done: {item.doneCount}
+          </p>
+          <p style={{ color: 'var(--text-color)' }}>
+            📌 Total: {item.totalCount}
+          </p>
+          <p style={{ color: primaryColor }}>
+            📊 Completion:{" "}
+            {item.totalCount > 0
+              ? `${Math.round((item.doneCount / item.totalCount) * 100)}%`
+              : "0%"}
           </p>
         </div>
       );
@@ -167,7 +205,6 @@ export default function Progress() {
 
   return (
     <div className="progress-container">
-      {/* ✅ Header preserved EXACTLY as before */}
       <div className="progress-header">
         <h2>Progress</h2>
         <div className="progress-menu">
@@ -206,9 +243,8 @@ export default function Progress() {
         </div>
       </div>
 
-      {/* ✅ Charts */}
       <div className="progress-content">
-        <div className="full-chart scroll-scale">
+        <div className="full-chart">
           <h3 className="chart-title">Topic Study Trends</h3>
           <ResponsiveContainer key={refreshKey + "-chart1"} width="100%" height={340}>
             <LineChart data={chartData} margin={{ top: 10, right: 20, bottom: 50 }}>
@@ -221,71 +257,39 @@ export default function Progress() {
               <Line
                 type="monotone"
                 dataKey="seconds"
-                stroke="var(--primary-color)"
+                stroke={primaryColor}
                 strokeWidth={2}
-                dot={{ r: 3 }}
+                dot={{ r: 3, fill: primaryColor }}
                 name="Time Spent"
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="full-chart scroll-scale practice-stats-chart">
+        <div className="full-chart">
           <h3 className="chart-title">Practice Stats</h3>
           <ResponsiveContainer key={refreshKey + "-chart2"} width="100%" height={300}>
             <AreaChart data={practiceData} margin={{ top: 10, right: 10, bottom: 50 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis stroke="#ccc" tick={false} />
               <YAxis stroke="#ccc" />
-              <Tooltip
-                content={({ active, payload }) => {
-                  if (active && payload && payload.length) {
-                    const item = payload[0].payload;
-                    return (
-                      <div className="practice-tooltip">
-                        <p className="tooltip-name">
-                          <strong>{item.topic}: {item.subtopic}</strong>
-                        </p>
-                        <p>🎯 Difficulty: {item.difficulty}</p>
-                        <p style={{ color: "green" }}>✅ Done: {item.doneCount}</p>
-                        <p>📌 Total: {item.totalCount}</p>
-                        <p>
-                          📊 Completion:{" "}
-                          {item.totalCount > 0
-                            ? `${Math.round((item.doneCount / item.totalCount) * 100)}%`
-                            : "0%"}
-                        </p>
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
-              />
+              <Tooltip content={<PracticeTooltip />} />
               <Area
                 type="monotone"
                 dataKey="doneCount"
-                stroke="#00ff99"
-                fill="#00ff99"
+                stroke={primaryColor}
+                fill={primaryColor}
                 fillOpacity={0.3}
-                name="Easy"
+                name="Done"
                 isAnimationActive={false}
               />
               <Area
                 type="monotone"
-                dataKey="doneCount"
-                stroke="#ffcc00"
-                fill="#ffcc00"
-                fillOpacity={0.3}
-                name="Moderate"
-                isAnimationActive={false}
-              />
-              <Area
-                type="monotone"
-                dataKey="doneCount"
-                stroke="#ff4d4d"
-                fill="#ff4d4d"
-                fillOpacity={0.3}
-                name="Hard"
+                dataKey="totalCount"
+                stroke="#555555"
+                fill="#555555"
+                fillOpacity={0.1}
+                name="Total"
                 isAnimationActive={false}
               />
             </AreaChart>

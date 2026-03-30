@@ -112,13 +112,11 @@ export default function Practice() {
   const [selectedSubtopic, setSelectedSubtopic] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [elapsed, setElapsed] = useState(0);
-  const [refreshKey, setRefreshKey] = useState(0); // 👈 For sidebar reload
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // ✅ Sidebar "soft reload" listener
   useEffect(() => {
     const handleSoftReload = () => {
       if (!showForm) {
-        console.log("🔄 Soft reloading Practice content...");
         setRefreshKey((prev) => prev + 1);
       }
     };
@@ -126,7 +124,6 @@ export default function Practice() {
     return () => window.removeEventListener("soft-reload", handleSoftReload);
   }, [showForm]);
 
-  // ✅ Load questions
   const handleLoadQuestions = async () => {
     if (!selectedTopic || !selectedSubtopic || !difficulty || !user?.uid) return;
     try {
@@ -190,14 +187,12 @@ export default function Practice() {
     }
   };
 
-  // ✅ Auto-refresh questions on soft reload (no reset)
   useEffect(() => {
     if (!showForm && selectedTopic && selectedSubtopic && difficulty) {
       handleLoadQuestions();
     }
   }, [refreshKey]);
 
-  // ✅ Update question status
   const updateStatus = async (id, status) => {
     if (!user?.uid) return;
 
@@ -231,7 +226,6 @@ export default function Practice() {
     }
   };
 
-  // ✅ Session tracking
   useEffect(() => {
     const interval = setInterval(() => setElapsed(getSessionElapsed()), 1000);
     return () => clearInterval(interval);
@@ -241,7 +235,6 @@ export default function Practice() {
 
   const filteredItems = practiceItems.filter((item) => item.status === activeTab);
 
-  // ✅ Render steps
   const renderStep = (step, stepNumber) => {
     if (!step || (!step.content && !step.parts)) return null;
 
@@ -273,7 +266,11 @@ export default function Practice() {
     };
 
     return (
-      <div key={stepNumber} className="step-block fade-in" style={{ animationDelay: `${stepNumber * 0.4}s` }}>
+      <div
+        key={stepNumber}
+        className="step-block fade-in"
+        style={{ animationDelay: `${stepNumber * 0.4}s` }}
+      >
         <div className="step-label">Step {stepNumber + 1}</div>
         {renderContent()}
       </div>
@@ -281,13 +278,19 @@ export default function Practice() {
   };
 
   return (
-    <MathJaxContext version={3} config={{ tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } }}>
+    <MathJaxContext
+      key={refreshKey}
+      version={3}
+      config={{ tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } }}
+    >
       <section className="practice-page">
         <header className="practice-header">
           <h2>Practice</h2>
           {!showForm && (
             <>
-              <div className="session-timer">⏱ {Math.floor(elapsed / 60)}m {elapsed % 60}s</div>
+              <div className="session-timer">
+                ⏱ {Math.floor(elapsed / 60)}m {elapsed % 60}s
+              </div>
               <button className="menu-icon" onClick={() => setShowForm(true)}>
                 <FaEllipsisV className="filter-icon" />
               </button>
@@ -317,15 +320,17 @@ export default function Practice() {
               <>
                 <h3>Select Subtopic</h3>
                 <div className="option-grid">
-                  {topicsData.find((t) => t.name === selectedTopic)?.subtopics.map((sub) => (
-                    <button
-                      key={sub.name}
-                      onClick={() => setSelectedSubtopic(sub.name)}
-                      className={selectedSubtopic === sub.name ? "active" : ""}
-                    >
-                      {sub.name}
-                    </button>
-                  ))}
+                  {topicsData
+                    .find((t) => t.name === selectedTopic)
+                    ?.subtopics.map((sub) => (
+                      <button
+                        key={sub.name}
+                        onClick={() => setSelectedSubtopic(sub.name)}
+                        className={selectedSubtopic === sub.name ? "active" : ""}
+                      >
+                        {sub.name}
+                      </button>
+                    ))}
                 </div>
               </>
             )}
@@ -387,12 +392,27 @@ export default function Practice() {
                   <div className="practice-actions">
                     {item.status === "Unattempted" && (
                       <>
-                        <button className="InProgress" onClick={() => updateStatus(item.id, "InProgress")}>In Progress</button>
-                        <button className="Done" onClick={() => updateStatus(item.id, "Done")}>Done</button>
+                        <button
+                          className="InProgress"
+                          onClick={() => updateStatus(item.id, "InProgress")}
+                        >
+                          In Progress
+                        </button>
+                        <button
+                          className="Done"
+                          onClick={() => updateStatus(item.id, "Done")}
+                        >
+                          Done
+                        </button>
                       </>
                     )}
                     {item.status === "InProgress" && (
-                      <button className="Done" onClick={() => updateStatus(item.id, "Done")}>Done</button>
+                      <button
+                        className="Done"
+                        onClick={() => updateStatus(item.id, "Done")}
+                      >
+                        Done
+                      </button>
                     )}
                   </div>
 
@@ -406,10 +426,14 @@ export default function Practice() {
                               .filter(
                                 (s) =>
                                   s &&
-                                  ((s.content && s.content.trim() !== "." && s.content.trim() !== "-") ||
+                                  ((s.content &&
+                                    s.content.trim() !== "." &&
+                                    s.content.trim() !== "-") ||
                                     (s.parts &&
                                       s.parts.some(
-                                        (p) => p.content.trim() !== "." && p.content.trim() !== "-"
+                                        (p) =>
+                                          p.content.trim() !== "." &&
+                                          p.content.trim() !== "-"
                                       )))
                               )
                               .map((s, i) => renderStep(s, i))}
@@ -423,7 +447,12 @@ export default function Practice() {
                       </div>
 
                       <div className="reset-row">
-                        <button className="Unattempted" onClick={() => updateStatus(item.id, "Unattempted")}>Reset</button>
+                        <button
+                          className="Unattempted"
+                          onClick={() => updateStatus(item.id, "Unattempted")}
+                        >
+                          Reset
+                        </button>
                       </div>
                     </>
                   )}

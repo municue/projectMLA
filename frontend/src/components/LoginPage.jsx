@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
 } from 'firebase/auth';
 import { auth } from './firebase';
 import './LoginPage.css';
@@ -13,36 +13,50 @@ export default function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Email login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      onLogin && onLogin(user);
+      onLogin && onLogin(userCredential.user);
       navigate('/');
     } catch (err) {
-      setError(err.message);
+      setError(getFriendlyError(err.code));
+    } finally {
+      setLoading(false);
     }
   };
 
-  // ✅ Google login
   const handleGoogleLogin = async () => {
     setError('');
+    setLoading(true);
 
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      onLogin && onLogin(user);
+      onLogin && onLogin(result.user);
       navigate('/');
     } catch (err) {
-      setError(err.message);
+      setError(getFriendlyError(err.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getFriendlyError = (code) => {
+    switch (code) {
+      case 'auth/user-not-found': return 'No account found with this email.';
+      case 'auth/wrong-password': return 'Incorrect password.';
+      case 'auth/invalid-email': return 'Invalid email address.';
+      case 'auth/too-many-requests': return 'Too many attempts. Try again later.';
+      case 'auth/popup-closed-by-user': return 'Google sign-in was cancelled.';
+      case 'auth/network-request-failed': return 'Network error. Check your connection.';
+      default: return 'Something went wrong. Please try again.';
     }
   };
 
@@ -51,7 +65,6 @@ export default function LoginPage({ onLogin }) {
       <div className="login-form">
         <h2>Log In</h2>
 
-        {/* STEP 1: Choose method */}
         {!method && (
           <>
             <div className="method-row">
@@ -59,8 +72,9 @@ export default function LoginPage({ onLogin }) {
                 type="button"
                 className="method-btn google-btn"
                 onClick={handleGoogleLogin}
+                disabled={loading}
               >
-                Google
+                {loading ? 'Please wait...' : 'Google'}
               </button>
 
               <span className="or-text">or</span>
@@ -83,10 +97,9 @@ export default function LoginPage({ onLogin }) {
           </>
         )}
 
-        {/* STEP 2: Email form */}
         {method === 'email' && (
           <form onSubmit={handleSubmit}>
-            {error && <p className="error">{error}</p>}
+            {error && <p style={{ color: 'red', fontSize: '0.85rem' }}>{error}</p>}
 
             <label>Email</label>
             <input
@@ -95,7 +108,7 @@ export default function LoginPage({ onLogin }) {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
- 
+
             <label>Password</label>
             <input
               type="password"
@@ -105,18 +118,20 @@ export default function LoginPage({ onLogin }) {
             />
 
             <div className="action-row">
-              <button type="submit" className="login-btn">
-                Log In
+              <button type="submit" className="login-btn" disabled={loading}>
+                {loading ? 'Logging in...' : 'Log In'}
               </button>
-
-              <span
-                className="link back-link"
-                onClick={() => setMethod(null)}
-              >
+              <span className="link back-link" onClick={() => setMethod(null)}>
                 Back
               </span>
             </div>
           </form>
+        )}
+
+        {error && method === null && (
+          <p style={{ color: 'red', fontSize: '0.85rem', marginTop: '10px' }}>
+            {error}
+          </p>
         )}
       </div>
     </div>

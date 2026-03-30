@@ -379,6 +379,10 @@
   border: 1px solid var(--primary-color);
 }
 
+.expression-display.active {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 6px var(--primary-color);
+}
 
 .fake-caret {
   display: inline-block;

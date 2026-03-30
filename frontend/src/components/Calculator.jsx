@@ -4,7 +4,6 @@ import "./Calculator.css";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import { FaEllipsisV } from "react-icons/fa";
 
-// 🔑 Firebase imports
 import { db } from "./firebase";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -18,7 +17,6 @@ import {
   doc,
 } from "firebase/firestore";
 
-// 🔑 Use ChatGPT solver
 import { queryChatGPT } from "../utils/queryChatGPT";
 
 export default function CalculatorPage() {
@@ -31,31 +29,31 @@ export default function CalculatorPage() {
   const [activeCategory, setActiveCategory] = useState("basic");
   const [showAlphabet, setShowAlphabet] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(true);
-
   const [pendingExpr, setPendingExpr] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // 🔑 Past calculations + toast
   const [pastCalcs, setPastCalcs] = useState([]);
   const [showPastModal, setShowPastModal] = useState(false);
   const [toast, setToast] = useState(null);
-
-  // 🔑 Delete confirmation
   const [deleteTarget, setDeleteTarget] = useState(null);
-
-  // 🔑 Confirm solve modal
   const [showConfirm, setShowConfirm] = useState(false);
+  const [mathKey, setMathKey] = useState(0); // 👈 forces MathJax re-render
 
-  // Fake blinking caret input ref
   const inputRef = useRef(null);
 
-  // ✅ Toast helper
+  // ✅ Listen for soft-reload to re-render MathJax
+  useEffect(() => {
+    const handleSoftReload = () => {
+      setMathKey((prev) => prev + 1);
+    };
+    window.addEventListener("soft-reload", handleSoftReload);
+    return () => window.removeEventListener("soft-reload", handleSoftReload);
+  }, []);
+
   const showToast = (message, type = "info") => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
   };
 
-  // ✅ Helper: sanitize values for Firestore
   const sanitizeForFirestore = (obj) => {
     if (obj === undefined) return null;
     if (Array.isArray(obj)) return obj.map((item) => sanitizeForFirestore(item));
@@ -69,10 +67,9 @@ export default function CalculatorPage() {
     return obj;
   };
 
-  //  Save to Firestore
   const saveCalculation = async () => {
     if (!user?.email || !expression?.trim() || steps.length === 0) {
-      showToast(" Nothing to save", "error");
+      showToast("⚠️ Nothing to save", "error");
       return;
     }
     try {
@@ -83,17 +80,14 @@ export default function CalculatorPage() {
         finalAnswer: finalAnswer || null,
         createdAt: serverTimestamp(),
       });
-
       await addDoc(collection(db, "calculations"), payload);
-
-      showToast(" Calculation saved", "success");
+      showToast("✅ Calculation saved", "success");
     } catch (err) {
       console.error("Save error:", err);
       showToast("❌ Failed to save", "error");
     }
   };
 
-  //  Subscribe to past calculations
   useEffect(() => {
     if (!user?.email) return;
 
@@ -105,7 +99,6 @@ export default function CalculatorPage() {
         const items = snapshot.docs
           .map((docSnap) => {
             const data = docSnap.data();
-
             let displayTime = "";
             try {
               if (data.createdAt?.toDate) {
@@ -114,26 +107,22 @@ export default function CalculatorPage() {
                 displayTime = new Date().toLocaleString();
               }
             } catch (e) {
-              console.warn("Invalid timestamp", e);
               displayTime = new Date().toLocaleString();
             }
-
             return { id: docSnap.id, ...data, displayTime };
           })
           .filter((item) => item.userEmail === user.email);
-
         setPastCalcs(items);
       },
       (error) => {
         console.error("Snapshot error:", error);
-        showToast(" Failed to load history", "error");
+        showToast("❌ Failed to load history", "error");
       }
     );
 
     return () => unsubscribe();
   }, [user]);
 
-  //  Delete calculation
   const deleteCalculation = async () => {
     if (!deleteTarget) return;
     try {
@@ -146,7 +135,6 @@ export default function CalculatorPage() {
     }
   };
 
-  //  Insert character at cursor position
   const insertAtCursor = (val) => {
     setExpression((expr) => {
       const newExpr = expr.slice(0, cursorPos) + val + expr.slice(cursorPos);
@@ -155,7 +143,6 @@ export default function CalculatorPage() {
     });
   };
 
-  //  Handle button clicks
   const handleClick = (val) => {
     if ((val === "ABC" || val === "123") && activeCategory === "basic") {
       setShowAlphabet((prev) => !prev);
@@ -188,7 +175,6 @@ export default function CalculatorPage() {
     }
   };
 
-  // ✅ Keyboard typing handler
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -210,11 +196,10 @@ export default function CalculatorPage() {
     }
   };
 
-  // ✅ Keyboard keys
   const numericKeys = [
     "1","2","3","4","5","6","7","8",
-    "9","0","+","*","/","^","√","-", 
-    "←","↑","→","log","=","Enter","ABC","↓", 
+    "9","0","+","*","/","^","√","-",
+    "←","↑","→","log","=","Enter","ABC","↓",
     "Space","exp","Backspace","(",")","lim"
   ];
 
@@ -250,7 +235,6 @@ export default function CalculatorPage() {
     return [...baseKeys, ...switchers];
   };
 
-  // ✅ Render explanation first, then math
   const renderStep = (item) => {
     if (!item) return null;
 
@@ -261,7 +245,7 @@ export default function CalculatorPage() {
             part.type === "text" ? (
               <p key={idx} className="step-text">{part.content}</p>
             ) : (
-              <div key={idx} className="step-math">
+              <div key={`${mathKey}-${idx}`} className="step-math">
                 <MathJax dynamic>{`\\(${part.content}\\)`}</MathJax>
               </div>
             )
@@ -270,10 +254,9 @@ export default function CalculatorPage() {
       );
     }
 
-    // Fallback for old format
     if (item.type === "latex") {
       return (
-        <div className="step-math">
+        <div key={mathKey} className="step-math">
           <MathJax dynamic>{`\\(${item.content}\\)`}</MathJax>
         </div>
       );
@@ -305,13 +288,15 @@ export default function CalculatorPage() {
               <div className="calc-result">
                 <div className="question-box">
                   <h4>Question:</h4>
-                  <MathJax dynamic>{`\\(${pendingExpr || expression}\\)`}</MathJax>
+                  <MathJax key={`q-${mathKey}`} dynamic>
+                    {`\\(${pendingExpr || expression}\\)`}
+                  </MathJax>
                 </div>
 
                 <div className="steps-list">
                   {steps.map((s, i) => (
                     <div
-                      key={i}
+                      key={`${mathKey}-step-${i}`}
                       className="step-block fade-in"
                       style={{ animationDelay: `${i * 0.4}s` }}
                     >
@@ -320,7 +305,11 @@ export default function CalculatorPage() {
                   ))}
                 </div>
 
-                <div className="answer-box fade-in" style={{ animationDelay: `${steps.length * 0.4}s` }}>
+                <div
+                  key={`${mathKey}-answer`}
+                  className="answer-box fade-in"
+                  style={{ animationDelay: `${steps.length * 0.4}s` }}
+                >
                   <h4>Final Answer:</h4>
                   {renderStep(finalAnswer)}
                 </div>
@@ -328,11 +317,10 @@ export default function CalculatorPage() {
             )}
           </div>
 
-          {/* ✅ Input + Toggle on same row */}
           <div className="calc-footer">
             <div className="display-row">
               <div
-                className={`expression-display ${document.activeElement === inputRef.current ? 'active' : ''}`}
+                className="expression-display"
                 tabIndex={0}
                 onKeyDown={handleKeyDown}
                 ref={inputRef}
@@ -369,7 +357,6 @@ export default function CalculatorPage() {
           </div>
         </div>
 
-        {/* ✅ Past Calculations Modal with delete */}
         {showPastModal && (
           <div className="modal-overlay">
             <div className="modal-box">
@@ -388,7 +375,7 @@ export default function CalculatorPage() {
                         alignItems: "center",
                         marginBottom: "10px",
                         padding: "10px",
-                        border: "1px solid #333",
+                        border: "1px solid var(--border-color)",
                         borderRadius: "6px",
                       }}
                     >
@@ -401,10 +388,20 @@ export default function CalculatorPage() {
                           setShowPastModal(false);
                         }}
                       >
-                        <p><strong><MathJax dynamic>{`\\(${calc.expression}\\)`}</MathJax></strong></p>
+                        <p>
+                          <strong>
+                            <MathJax key={`hist-${mathKey}-${calc.id}`} dynamic>
+                              {`\\(${calc.expression}\\)`}
+                            </MathJax>
+                          </strong>
+                        </p>
                         <small>{calc.displayTime}</small>
                       </div>
-                      <button className="danger" style={{ marginLeft: "10px" }} onClick={() => setDeleteTarget(calc)}>
+                      <button
+                        className="danger"
+                        style={{ marginLeft: "10px" }}
+                        onClick={() => setDeleteTarget(calc)}
+                      >
                         🗑️
                       </button>
                     </div>
@@ -418,13 +415,14 @@ export default function CalculatorPage() {
           </div>
         )}
 
-        {/* ✅ Confirm Solve Modal */}
         {showConfirm && (
           <div className="modal-overlay">
             <div className="modal-box">
               <h3>Solve this expression?</h3>
               <div style={{ margin: "15px 0" }}>
-                <MathJax dynamic>{`\\(${pendingExpr}\\)`}</MathJax>
+                <MathJax key={`confirm-${mathKey}`} dynamic>
+                  {`\\(${pendingExpr}\\)`}
+                </MathJax>
               </div>
               <div className="modal-actions">
                 <button
@@ -449,7 +447,6 @@ export default function CalculatorPage() {
           </div>
         )}
 
-        {/* ✅ Delete Confirmation Modal */}
         {deleteTarget && (
           <div className="modal-overlay">
             <div className="modal-box">
@@ -464,7 +461,6 @@ export default function CalculatorPage() {
           </div>
         )}
 
-        {/* ✅ Toast Notification */}
         {toast && (
           <div className={`toast ${toast.type}`}>
             {toast.message}

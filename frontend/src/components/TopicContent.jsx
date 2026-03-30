@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { doc, getDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+import { useParams, useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import { useAuth } from "../context/AuthContext";
@@ -26,11 +26,9 @@ export default function TopicContent() {
   const [elapsed, setElapsed] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
   const [nextSubtopic, setNextSubtopic] = useState(null);
-
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef();
 
-  // Close menu on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -41,7 +39,6 @@ export default function TopicContent() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Soft reload listener
   useEffect(() => {
     const handleSoftReload = () => {
       setRefreshKey((prev) => prev + 1);
@@ -50,7 +47,6 @@ export default function TopicContent() {
     return () => window.removeEventListener("soft-reload", handleSoftReload);
   }, []);
 
-  // Fetch subtopic content + find next subtopic
   useEffect(() => {
     const fetchContent = async () => {
       try {
@@ -69,7 +65,6 @@ export default function TopicContent() {
               subtopic: subtopicId,
               source: "topics",
             });
-
             startSession({
               userEmail: user.email,
               topic: topicId,
@@ -82,7 +77,6 @@ export default function TopicContent() {
           setContent(null);
         }
 
-        // Fetch all subtopics to find next one
         const topicDocRef = doc(db, "topics", topicId);
         const topicDocSnap = await getDoc(topicDocRef);
 
@@ -91,11 +85,9 @@ export default function TopicContent() {
           const subtopics = (topicData.subtopics || []).sort(
             (a, b) => a.order - b.order
           );
-
           const currentIndex = subtopics.findIndex(
             (s) => formatId(s.name) === subtopicId
           );
-
           if (currentIndex !== -1 && currentIndex < subtopics.length - 1) {
             setNextSubtopic(subtopics[currentIndex + 1]);
           } else {
@@ -108,13 +100,11 @@ export default function TopicContent() {
     };
 
     fetchContent();
-
     return () => {
       if (user?.email) endSession();
     };
-  }, [subtopicId, topicId, user, refreshKey]);
+  }, [subtopicId, topicId, user]);
 
-  // Timer
   useEffect(() => {
     const interval = setInterval(() => {
       setElapsed(getSessionElapsed());
@@ -136,36 +126,40 @@ export default function TopicContent() {
     }
   };
 
+  const Header = () => (
+    <header className="topic-content-header">
+      <h2>{content ? content.name : decodeURIComponent(subtopicId).replace(/-/g, " ")}</h2>
+      <div className="session-timer">
+        ⏱ {Math.floor(elapsed / 60)}m {elapsed % 60}s
+      </div>
+      <div className="history-menu" ref={menuRef}>
+        <FaEllipsisV
+          className="menu-icon"
+          onClick={() => setShowMenu((prev) => !prev)}
+        />
+        {showMenu && (
+          <div className="history-dropdown">
+            <button onClick={() => { navigate(-1); setShowMenu(false); }}>
+              Back
+            </button>
+            {nextSubtopic && (
+              <button onClick={handleNext}>
+                Next: {nextSubtopic.name}
+              </button>
+            )}
+            <button onClick={() => { navigate("/topics"); setShowMenu(false); }}>
+              Back to Topics List
+            </button>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+
   if (!content) {
     return (
       <section className="topic-content-page">
-        <header className="topic-content-header">
-          <h2>{decodeURIComponent(subtopicId).replace(/-/g, " ")}</h2>
-          <div className="session-timer">
-            ⏱ {Math.floor(elapsed / 60)}m {elapsed % 60}s
-          </div>
-          <div className="history-menu" ref={menuRef}>
-            <FaEllipsisV
-              className="menu-icon"
-              onClick={() => setShowMenu((prev) => !prev)}
-            />
-            {showMenu && (
-              <div className="history-dropdown">
-                <button onClick={() => { navigate(-1); setShowMenu(false); }}>
-                  Back
-                </button>
-                {nextSubtopic && (
-                  <button onClick={handleNext}>
-                    Next: {nextSubtopic.name}
-                  </button>
-                )}
-                <button onClick={() => { navigate("/topics"); setShowMenu(false); }}>
-                  Back to Topics List
-                </button>
-              </div>
-            )}
-          </div>
-        </header>
+        <Header />
         <p style={{ padding: "20px" }}>Loading...</p>
       </section>
     );
@@ -174,37 +168,11 @@ export default function TopicContent() {
   return (
     <MathJaxContext config={mathJaxConfig}>
       <section className="topic-content-page">
-        <header className="topic-content-header">
-          <h2>{content.name}</h2>
-          <div className="session-timer">
-            ⏱ {Math.floor(elapsed / 60)}m {elapsed % 60}s
-          </div>
+        <Header />
 
-          <div className="history-menu" ref={menuRef}>
-            <FaEllipsisV
-              className="menu-icon"
-              onClick={() => setShowMenu((prev) => !prev)}
-            />
-            {showMenu && (
-              <div className="history-dropdown">
-                <button onClick={() => { navigate(-1); setShowMenu(false); }}>
-                  Back
-                </button>
-                {nextSubtopic && (
-                  <button onClick={handleNext}>
-                    Next: {nextSubtopic.name}
-                  </button>
-                )}
-                <button onClick={() => { navigate("/topics"); setShowMenu(false); }}>
-                  Back to Topics List
-                </button>
-              </div>
-            )}
-          </div>
-        </header>
+        {/* 👇 key={refreshKey} forces full unmount+remount of entire body */}
+        <div key={refreshKey} className="topic-content-body fade-in">
 
-        <div className="topic-content-body fade-in">
-          {/* Overview */}
           {content.explanation && (
             <>
               <h3 style={{ textAlign: "center", textDecoration: "underline",
@@ -212,12 +180,11 @@ export default function TopicContent() {
                 Overview
               </h3>
               <p className="overview-text">
-                <MathJax dynamic key={refreshKey}>{content.explanation}</MathJax>
+                <MathJax dynamic>{content.explanation}</MathJax>
               </p>
             </>
           )}
 
-          {/* Properties */}
           {content.formulas?.length > 0 && (
             <>
               <h4 style={{ textAlign: "center", fontSize: "19px",
@@ -235,14 +202,10 @@ export default function TopicContent() {
                   {content.formulas.map((f, idx) => (
                     <tr key={idx}>
                       <td className="formula-cell">
-                        <MathJax dynamic key={`${refreshKey}-prop-${idx}`}>
-                          {f.property}
-                        </MathJax>
+                        <MathJax dynamic>{f.property}</MathJax>
                       </td>
                       <td>
-                        <MathJax dynamic key={`${refreshKey}-ex-${idx}`}>
-                          {f.example}
-                        </MathJax>
+                        <MathJax dynamic>{f.example}</MathJax>
                       </td>
                     </tr>
                   ))}
@@ -251,7 +214,6 @@ export default function TopicContent() {
             </>
           )}
 
-          {/* Common Mistakes */}
           {content.commonMistakes?.length > 0 && (
             <>
               <h4 style={{ textAlign: "center", fontSize: "19px",
@@ -262,27 +224,20 @@ export default function TopicContent() {
                 <div key={idx} className="mistake-block">
                   <p>
                     <strong>Correct:</strong>{" "}
-                    <MathJax dynamic key={`${refreshKey}-correct-${idx}`}>
-                      {m.correct}
-                    </MathJax>
+                    <MathJax dynamic>{m.correct}</MathJax>
                   </p>
                   <p>
                     <strong>Incorrect:</strong>{" "}
-                    <MathJax dynamic key={`${refreshKey}-incorrect-${idx}`}>
-                      {m.incorrect}
-                    </MathJax>
+                    <MathJax dynamic>{m.incorrect}</MathJax>
                   </p>
                   <p>
-                    <MathJax dynamic key={`${refreshKey}-exp-${idx}`}>
-                      {m.explanation}
-                    </MathJax>
+                    <MathJax dynamic>{m.explanation}</MathJax>
                   </p>
                 </div>
               ))}
             </>
           )}
 
-          {/* Examples */}
           {content.examples?.length > 0 && (
             <>
               <h4 style={{ textAlign: "center", fontSize: "19px",
@@ -301,9 +256,7 @@ export default function TopicContent() {
                           <div key={qIdx} className="example-item">
                             <p>
                               <strong>Q{qIdx + 1}:</strong>{" "}
-                              <MathJax dynamic key={`${refreshKey}-q-${qIdx}`}>
-                                {ex.question}
-                              </MathJax>
+                              <MathJax dynamic>{ex.question}</MathJax>
                             </p>
                           </div>
                         ))}
@@ -316,9 +269,7 @@ export default function TopicContent() {
                             {cat.questions?.map((ex, qIdx) => (
                               <div key={qIdx} style={{ marginBottom: "15px" }}>
                                 <p><strong>Solution {qIdx + 1}:</strong></p>
-                                <MathJax dynamic key={`${refreshKey}-sol-${qIdx}`}>
-                                  {ex.solution}
-                                </MathJax>
+                                <MathJax dynamic>{ex.solution}</MathJax>
                               </div>
                             ))}
                           </div>
@@ -329,9 +280,7 @@ export default function TopicContent() {
                       <div key={idx} className="example-item">
                         <p>
                           <strong>Q{idx + 1}:</strong>{" "}
-                          <MathJax dynamic key={`${refreshKey}-exq-${idx}`}>
-                            {ex.question}
-                          </MathJax>
+                          <MathJax dynamic>{ex.question}</MathJax>
                         </p>
                         <button className="solution-btn"
                           onClick={() => toggleCategory(idx)}>
@@ -340,9 +289,7 @@ export default function TopicContent() {
                         {expandedExamples[idx] && (
                           <div className="solution-box">
                             <p><strong>Solution {idx + 1}:</strong></p>
-                            <MathJax dynamic key={`${refreshKey}-exsol-${idx}`}>
-                              {ex.solution}
-                            </MathJax>
+                            <MathJax dynamic>{ex.solution}</MathJax>
                           </div>
                         )}
                       </div>

@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
 } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore'; 
-import { auth, db } from './firebase'; 
+import { auth } from './firebase';
 import './LoginPage.css';
 import './RegisterPage.css';
 
@@ -15,57 +14,49 @@ export default function RegisterPage({ onRegister }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Email registration
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setMessage('');
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        email: user.email,
-        provider: "password",
-        createdAt: serverTimestamp()
-      });
-
-      onRegister && onRegister(user);
-      navigate('/');
-    } catch (err) {
-      setMessage(err.message);
+  const getFriendlyError = (code) => {
+    switch (code) {
+      case 'auth/email-already-in-use': return 'An account with this email already exists.';
+      case 'auth/invalid-email': return 'Invalid email address.';
+      case 'auth/weak-password': return 'Password must be at least 6 characters.';
+      case 'auth/popup-closed-by-user': return 'Google sign-up was cancelled.';
+      case 'auth/network-request-failed': return 'Network error. Check your connection.';
+      default: return 'Something went wrong. Please try again.';
     }
   };
 
-  // ✅ Google registration
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setMessage('');
+    setLoading(true);
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      onRegister && onRegister(userCredential.user);
+      navigate('/');
+    } catch (err) {
+      setMessage(getFriendlyError(err.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleGoogleRegister = async () => {
     setMessage('');
+    setLoading(true);
 
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      await setDoc(
-        doc(db, "users", user.uid),
-        {
-          uid: user.uid,
-          email: user.email,
-          name: user.displayName,
-          photo: user.photoURL,
-          provider: "google",
-          createdAt: serverTimestamp()
-        },
-        { merge: true }
-      );
-
-      onRegister && onRegister(user);
+      onRegister && onRegister(result.user);
       navigate('/');
     } catch (err) {
-      setMessage(err.message);
+      setMessage(getFriendlyError(err.code));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,7 +65,6 @@ export default function RegisterPage({ onRegister }) {
       <div className="login-form">
         <h2>Register</h2>
 
-        {/* STEP 1: Choose method */}
         {!method && (
           <>
             <div className="method-row">
@@ -82,8 +72,9 @@ export default function RegisterPage({ onRegister }) {
                 type="button"
                 className="method-btn google-btn"
                 onClick={handleGoogleRegister}
+                disabled={loading}
               >
-                Google
+                {loading ? 'Please wait...' : 'Google'}
               </button>
 
               <span className="or-text">or</span>
@@ -106,7 +97,6 @@ export default function RegisterPage({ onRegister }) {
           </>
         )}
 
-        {/* STEP 2: Email form */}
         {method === 'email' && (
           <form onSubmit={handleRegister}>
             <label>Email</label>
@@ -126,18 +116,25 @@ export default function RegisterPage({ onRegister }) {
             />
 
             <div className="action-row">
-              <button type="submit" className="register-btn">Register</button>
-              <span
-                className="link back-link"
-                onClick={() => setMethod(null)}
+              <button
+                type="submit"
+                className="register-btn"
+                disabled={loading}
               >
+                {loading ? 'Registering...' : 'Register'}
+              </button>
+              <span className="link back-link" onClick={() => setMethod(null)}>
                 Back
               </span>
             </div>
           </form>
-        )} 
+        )}
 
-        {message && <p className="error">{message}</p>}
+        {message && (
+          <p style={{ color: 'red', fontSize: '0.85rem', marginTop: '10px' }}>
+            {message}
+          </p>
+        )}
       </div>
     </div>
   );
