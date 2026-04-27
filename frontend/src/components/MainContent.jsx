@@ -3,6 +3,7 @@ import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 import "./MainContent.css";
 import infinityLogo from "../assets/infinityimg.png";
+import { generateFeedIfNeeded } from "../utils/generateFeed";
 
 export default function MainContent() {
   const [activeTab, setActiveTab] = useState("Home");
@@ -16,6 +17,10 @@ export default function MainContent() {
     const savedIndex = localStorage.getItem("mainContentIndex");
     if (savedTab) setActiveTab(savedTab);
     if (savedIndex) setCurrentIndex(parseInt(savedIndex, 10));
+  }, []);
+
+  useEffect(() => {
+    generateFeedIfNeeded();
   }, []);
 
   // ✅ Save state whenever tab or index changes

@@ -15,29 +15,36 @@
 
 .search-header {
   position: fixed;
-  width: 30%;
+  width: 32.5%;
   top: 0;
   height: 60px;
   display: flex;
   align-items: center;
-  background: var(--background-color);
+  justify-content: space-between;
+  padding: 0 20px;
+  background-color: blur(50px);
+  backdrop-filter: blur(10px);
   z-index: 5;
-  padding-left: 0;
+  margin-left: -18px;
+  
 }
 
 .search-box {
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: var(--background-color);
-  padding: 10px 14px;
-  border-radius: 9999px;
+  background-color: blur(50px);
+  padding: 5px 9px;
   border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-bottom: 9px;
+
+
   margin-top: 20px;
 }
 
 .search-box:hover {
-  border-color: var(--text-color);
+  border-color: var(--primary-color);
 }
 
 .search-icon {

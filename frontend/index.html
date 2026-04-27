@@ -4,11 +4,118 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>MLA Math App</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #000;
+      }
+
+      #splash-screen {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+      }
+
+
+      #splash-logo {
+        width: 400px;
+        height: auto;
+        animation: splashFade 3s ease-in-out infinite,
+                   glowPulse 3s ease-in-out infinite alternate;
+      }
+
+      #splash-tagline {
+        margin-top: 24px;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+        opacity: 0;
+        animation: taglineFade 3s ease-in-out 0.5s infinite;
+      }
+
+      @keyframes glowPulse {
+        0% {
+          filter: drop-shadow(0 0 10px cyan)
+                  drop-shadow(0 0 20px magenta);
+        }
+        100% {
+          filter: drop-shadow(0 0 35px cyan)
+                  drop-shadow(0 0 70px magenta);
+        }
+      }
+
+      @keyframes splashFade {
+        0%   { opacity: 0; transform: scale(0.95); }
+        20%  { opacity: 1; transform: scale(1); }
+        80%  { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(0.95); }
+      }
+
+      @keyframes taglineFade {
+        0%   { opacity: 0; }
+        30%  { opacity: 0.7; }
+        70%  { opacity: 0.7; }
+        100% { opacity: 0; }
+      }
+
+      #splash-screen.fade-out {
+        animation: screenFadeOut 0.8s ease-out forwards;
+      }
+
+      @keyframes screenFadeOut {
+        from { opacity: 1; }
+        to   { opacity: 0; pointer-events: none; }
+      }
+
+      #root {
+        opacity: 0;
+        transition: opacity 0.8s ease-in;
+      }
+
+      #root.visible {
+        opacity: 1;
+      }
+    </style>
   </head>
+
   <body>
+    <div id="splash-screen">
+      <!-- ✅ FIXED: proper class usage -->
+      <img id="splash-logo" src="/infinityimg.png" alt="MLA Logo" />
+      <p id="splash-tagline">MATH LEARNING APP</p>
+    </div>
+
     <div id="root"></div>
+
+    <script>
+      const SPLASH_DURATION = 3000;
+
+      setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        const root = document.getElementById('root');
+
+        splash.classList.add('fade-out');
+
+        setTimeout(() => {
+          splash.style.display = 'none';
+          root.classList.add('visible');
+        }, 800);
+      }, SPLASH_DURATION);
+    </script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-

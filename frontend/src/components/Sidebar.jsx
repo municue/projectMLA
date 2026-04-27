@@ -1,12 +1,14 @@
 // src/components/Sidebar.jsx
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Sidebar.css';
 import InfinityImg from '../assets/infinityimg.png';
 
 export default function Sidebar({ user, onLogout }) {
   const location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
+  const { level, userPhoto, userName } = useAuth();
 
   const menuItems = [
     { label: "Home", icon: "🏠", path: "/" },
@@ -16,10 +18,8 @@ export default function Sidebar({ user, onLogout }) {
     { label: "Practice", icon: "📝", path: "/practice" },
     { label: "Progress", icon: "📈", path: "/progress" },
     { label: "History", icon: "📜", path: "/history" },
-    { label: "Theme", icon: "🎨", path: "/theme" },
+    { label: "Settings", icon: "⚙️", path: "/settings" },
   ];
-
-  const initials = user ? user.email.charAt(0).toUpperCase() : '';
 
   const handleSoftReload = () => {
     const event = new CustomEvent('soft-reload', {
@@ -27,6 +27,10 @@ export default function Sidebar({ user, onLogout }) {
     });
     window.dispatchEvent(event);
   };
+
+  const avatarInitial = userName
+    ? userName.charAt(0).toUpperCase()
+    : user?.email?.charAt(0).toUpperCase();
 
   return (
     <aside className="sidebar">
@@ -60,11 +64,41 @@ export default function Sidebar({ user, onLogout }) {
             className="profile-avatar"
             onClick={() => setShowMenu(prev => !prev)}
           >
-            {initials}
+            {userPhoto ? (
+              <img
+                src={userPhoto}
+                alt="Profile"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              avatarInitial
+            )}
           </div>
           {showMenu && (
             <div className="profile-menu">
+              {userName && (
+                <span style={{
+                  fontWeight: 'bold',
+                  color: 'var(--text-color)',
+                  fontSize: '0.9rem',
+                }}>
+                  {userName}
+                </span>
+              )}
               <span className="profile-email">{user.email}</span>
+              {level && (
+                <span style={{
+                  fontSize: '0.75rem',
+                  color: 'var(--primary-color)',
+                }}>
+                  Level: {level.charAt(0).toUpperCase() + level.slice(1)}
+                </span>
+              )}
               <button className="logout-btn" onClick={onLogout}>
                 Log out
               </button>

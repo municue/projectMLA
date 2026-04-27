@@ -1,4 +1,8 @@
 import {createContext, useContext, useState, useEffect} from 'react';
+import {doc, setDoc, getDoc} from 'firebase/firestore';
+import {db} from '../components/firebase';
+import {onAuthStateChanged} from 'firebase/auth';
+import {auth} from '../components/firebase';
 
 const ThemeContext = createContext();
 
@@ -17,10 +21,9 @@ export const ACCENT_COLORS = [
   {name: 'Amber', value: '#f59e0b'},
 ];
 
-const savedColor = localStorage.getItem('accentColor') || '#00d4ff';
-const savedDark = localStorage.getItem('isDark') !== 'false';
+const DEFAULT_COLOR = '#00d4ff';
+const DEFAULT_DARK = true;
 
-// Apply immediately before React renders to prevent flash
 function applyTheme(color, dark) {
   const root = document.documentElement;
   root.style.setProperty('--primary-color', color);
@@ -34,25 +37,70 @@ function applyTheme(color, dark) {
   );
 }
 
-applyTheme(savedColor, savedDark);
+// Apply default theme immediately to prevent flash
+applyTheme(DEFAULT_COLOR, DEFAULT_DARK);
 
 export function ThemeProvider({children}) {
-  const [accentColor, setAccentColor] = useState(savedColor);
-  const [isDark, setIsDark] = useState(savedDark);
+  const [accentColor, setAccentColor] = useState(DEFAULT_COLOR);
+  const [isDark, setIsDark] = useState(DEFAULT_DARK);
+  const [currentUid, setCurrentUid] = useState(null);
+
+  // Listen for auth changes and load user theme from Firestore
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setCurrentUid(firebaseUser.uid);
+        try {
+          const userRef = doc(db, 'users', firebaseUser.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            const color = data.themeColor || DEFAULT_COLOR;
+            const dark = data.themeDark !== undefined ? data.themeDark : DEFAULT_DARK;
+            setAccentColor(color);
+            setIsDark(dark);
+            applyTheme(color, dark);
+          }
+        } catch (err) {
+          console.error('Failed to load theme:', err);
+        }
+      } else {
+        // User logged out — reset to default
+        setCurrentUid(null);
+        setAccentColor(DEFAULT_COLOR);
+        setIsDark(DEFAULT_DARK);
+        applyTheme(DEFAULT_COLOR, DEFAULT_DARK);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     applyTheme(accentColor, isDark);
   }, [accentColor, isDark]);
 
+  async function saveThemeToFirestore(color, dark) {
+    if (!currentUid) return;
+    try {
+      await setDoc(
+        doc(db, 'users', currentUid),
+        {themeColor: color, themeDark: dark},
+        {merge: true},
+      );
+    } catch (err) {
+      console.error('Failed to save theme:', err);
+    }
+  }
+
   function changeAccentColor(color) {
     setAccentColor(color);
-    localStorage.setItem('accentColor', color);
+    saveThemeToFirestore(color, isDark);
   }
 
   function toggleDark() {
     const next = !isDark;
     setIsDark(next);
-    localStorage.setItem('isDark', next);
+    saveThemeToFirestore(accentColor, next);
   }
 
   return (

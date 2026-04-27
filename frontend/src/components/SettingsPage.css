@@ -1,0 +1,214 @@
+.settings-page {
+  width: 44.2%;
+  margin-left: calc(23.2%);
+  height: 100vh;
+  background: var(--background-color);
+  color: var(--text-color);
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding-top: 70px;
+  scrollbar-width: none;
+}
+
+.settings-page::-webkit-scrollbar { width: 0; }
+
+.settings-header {
+  position: fixed;
+  width: 43.7%;
+  top: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: blur(50px);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+.settings-header h2 { margin: 0; font-size: 1.2rem; }
+
+.settings-body {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.settings-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-section h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin: 0 0 8px 0;
+}
+
+.settings-label {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.settings-input {
+  padding: 10px 12px;
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.settings-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.settings-btn {
+  padding: 10px 20px;
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+
+.settings-btn:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: #000;
+}
+
+.settings-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.settings-btn.danger { border-color: red; color: red; }
+.settings-btn.danger:hover { background: red; color: white; }
+
+.avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.settings-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--background-color);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initials {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.level-options-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mode-toggle-row {
+  display: flex;
+  gap: 10px;
+}
+
+.level-chip {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.level-chip:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.level-chip.selected {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.color-grid-settings {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.color-swatch-settings {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.color-swatch-settings:hover { transform: scale(1.15); }
+
+.color-swatch-settings.selected {
+  border-color: white;
+  transform: scale(1.15);
+}
+
+.danger-zone { border-color: rgba(255, 0, 0, 0.3); }
+.danger-zone h3 { color: red; }
+
+.delete-confirm { display: flex; flex-direction: column; gap: 10px; }
+
+.settings-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  z-index: 999;
+  animation: fadeInOut 3s ease;
+  background: var(--background-color);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.settings-toast.error { border-color: red; color: red; }
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, 20px); }
+  10%, 90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, 20px); }
+}

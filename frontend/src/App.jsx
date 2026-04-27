@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -18,12 +17,15 @@ import Calculator from './components/Calculator';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import ThemePanel from './components/ThemePanel';
+import LevelModal from './components/LevelModal';
+import SettingsPage from './components/SettingsPage';
+import { useAuth } from './context/AuthContext';
 import './App.css';
 
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { showLevelModal } = useAuth();
   const [user, setUser] = useState(null);
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -43,7 +45,8 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  const hideSidebar = location.pathname === '/loginpage' || location.pathname === '/register';
+  const hideSidebar = location.pathname === '/loginpage' ||
+    location.pathname === '/register';
 
   const handleLogout = async () => {
     setUser(null);
@@ -52,6 +55,9 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
+      {/* Level selection modal */}
+      {showLevelModal && user && <LevelModal />}
+
       {!hideSidebar && (
         <Sidebar
           user={user}
@@ -72,7 +78,7 @@ export default function App() {
           <Route path=":topicId/:subtopicId" element={<FormulaContent />} />
         </Route>
         <Route path="/calculator" element={<ProtectedRoute user={user}><Calculator /></ProtectedRoute>} />
-        <Route path="/theme" element={<ProtectedRoute user={user}><ThemePanel /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute user={user}><SettingsPage /></ProtectedRoute>} />
         <Route path="/loginpage" element={<LoginPage onLogin={(userData) => setUser(userData)} />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="*" element={<Navigate to="/loginpage" />} />
